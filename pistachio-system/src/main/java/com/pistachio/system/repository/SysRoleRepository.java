@@ -3,10 +3,12 @@ package com.pistachio.system.repository;
 import com.pistachio.system.entity.SysRoleEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author: Pengsy
@@ -21,4 +23,12 @@ public interface SysRoleRepository extends JpaRepository<SysRoleEntity, Long>, J
 
     @Query("select r from SysRoleEntity as r where r.id in (select ur.roleId from SysUserRoleEntity as ur where ur.userId = ?1 and ur.isDelete = 1) and r.isDelete = 1")
     List<SysRoleEntity> listRolesByUserId(Long userId);
+
+    Optional<SysRoleEntity> findFirstById(Long id);
+
+    Optional<SysRoleEntity> findFirstByCode(String code);
+
+    @Modifying
+    @Query("update SysRoleEntity as s set s.isDelete = 0 where s.id = ?1")
+    void softDeleteById(Long id);
 }

@@ -6,6 +6,7 @@ import com.pistachio.system.repository.SysMenuRepository;
 import com.pistachio.system.repository.SysUserRepository;
 import com.pistachio.system.service.ISysMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -41,6 +42,13 @@ public class SysMenuServiceImpl implements ISysMenuService {
 
         // 实体转DTO
         return convert(menuTree);
+    }
+
+    @Override
+    public List<SysMenuEntity> tree() {
+        List<SysMenuEntity> sysMenus = sysMenuRepository.findAll(Sort.by("orderNum").ascending());
+
+        return buildTreeMenu(sysMenus);
     }
 
     /**

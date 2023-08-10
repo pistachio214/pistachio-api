@@ -113,7 +113,6 @@ public class SysLoginHandle {
         // fix 由于redis取值的时候，得到的结果是Double，所以转成String的时候会携带小数部分，需要手动处理下
         captcha = captcha.substring(0, captcha.indexOf("."));
 
-
         if (!code.equals(captcha)) {
             throw new ServiceException("验证码校验失败", 500);
         }

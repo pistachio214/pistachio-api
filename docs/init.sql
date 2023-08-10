@@ -183,11 +183,11 @@ CREATE TABLE `sys_role`
     `id`         bigint(20)  NOT NULL AUTO_INCREMENT,
     `name`       varchar(64) NOT NULL,
     `code`       varchar(64) NOT NULL,
-    `remark`     varchar(64) DEFAULT NULL COMMENT '备注',
-    `created_at` datetime    NOT NULL,
-    `updated_at` datetime    DEFAULT NULL,
+    `remark`     varchar(64)          DEFAULT NULL COMMENT '备注',
+    `created_at` timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updated_at` timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     `status`     int(11)     NOT NULL,
-    `is_delete`  int(11)     DEFAULT '1' COMMENT '删除标识',
+    `is_delete`  int(11)              DEFAULT '1' COMMENT '删除标识',
     PRIMARY KEY (`id`),
     UNIQUE KEY `name` (`name`) USING BTREE,
     UNIQUE KEY `code` (`code`) USING BTREE
@@ -207,10 +207,10 @@ CREATE TABLE `sys_role_menu`
     `id`         bigint(20) NOT NULL AUTO_INCREMENT,
     `role_id`    bigint(20) NOT NULL,
     `menu_id`    bigint(20) NOT NULL,
-    `created_at` datetime   NOT NULL,
-    `updated_at` datetime DEFAULT NULL,
+    `created_at` timestamp  NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updated_at` timestamp  NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     `status`     int(11)    NOT NULL,
-    `is_delete`  int(11)  DEFAULT '1' COMMENT '删除标识',
+    `is_delete`  int(11)             DEFAULT '1' COMMENT '删除标识',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 167

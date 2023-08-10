@@ -30,4 +30,5 @@ public class SysRoleEntity extends BaseEntity implements Serializable {
 
     @Column(name = "remark")
     private String remark;
+
 }

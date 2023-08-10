@@ -1,9 +1,11 @@
 package com.pistachio.admin.controller.system;
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.stp.StpUtil;
 import com.pistachio.common.utils.R;
 import com.pistachio.system.dto.SysMenuDto;
 import com.pistachio.system.dto.vo.NavMenuVo;
+import com.pistachio.system.entity.SysMenuEntity;
 import com.pistachio.system.entity.SysUserEntity;
 import com.pistachio.system.service.ISysMenuService;
 import com.pistachio.system.service.ISysUserService;
@@ -49,5 +51,11 @@ public class SysMenuController {
         user.put("avatar", sysUser.getAvatar());
 
         return R.success(new NavMenuVo(authorityInfoArray, navs, user));
+    }
+
+    @GetMapping("/list")
+    @SaCheckPermission("sys:menu:list")
+    public R<List<SysMenuEntity>> list() {
+        return R.success(iSysMenuService.tree());
     }
 }

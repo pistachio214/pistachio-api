@@ -2,7 +2,11 @@ package com.pistachio.system.repository;
 
 import com.pistachio.system.entity.SysRoleMenuEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author: Pengsy
@@ -11,4 +15,10 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface SysRoleMenuRepository extends JpaRepository<SysRoleMenuEntity, Long> {
+
+    List<SysRoleMenuEntity> findAllByRoleId(Long roleId);
+
+    @Modifying
+    @Query("update SysRoleMenuEntity as s set s.isDelete = 0 where s.roleId = ?1")
+    void softDeleteByRoleId(Long roleId);
 }

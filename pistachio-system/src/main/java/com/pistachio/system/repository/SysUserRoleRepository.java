@@ -22,5 +22,8 @@ public interface SysUserRoleRepository extends JpaRepository<SysUserRoleEntity, 
     @Query("update SysUserRoleEntity as s set s.isDelete = 0 where s.userId = ?1")
     void deleteByUserId(Long userId);
 
+    @Modifying
+    @Query("update SysUserRoleEntity as s set s.isDelete = 0 where s.roleId = ?1")
+    void softDeleteByRoleId(Long id);
 
 }

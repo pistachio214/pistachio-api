@@ -1,6 +1,9 @@
 package com.pistachio.system.service;
 
+import com.pistachio.system.dto.req.RoleCreateRequest;
 import com.pistachio.system.dto.req.RoleListRequest;
+import com.pistachio.system.dto.req.RoleUpdateRequest;
+import com.pistachio.system.dto.vo.SysRoleAndMenuIdsVo;
 import com.pistachio.system.entity.SysRoleEntity;
 import org.springframework.data.domain.Page;
 
@@ -13,5 +16,14 @@ public interface ISysRoleService {
 
     Page<SysRoleEntity> selectRolePage(RoleListRequest request);
 
-    void rolePerm(Long userId, Long[] roleIds);
+    SysRoleAndMenuIdsVo detail(Long id);
+
+    void permRoleMenu(Long roleId, Long[] menuIds);
+
+    SysRoleEntity create(RoleCreateRequest request);
+
+    SysRoleEntity update(RoleUpdateRequest request);
+
+    void delete(Long id);
+
 }

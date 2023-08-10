@@ -111,4 +111,8 @@ public class UserConstants {
 
     public final static Integer STATUS_ON = 1;
     public final static Integer STATUS_OFF = 0;
+
+    public static final String DEFAULT_PASSWORD = "12345678";
+    public static final String DEFAULT_AVATAR = "https://image-1300566513.cos.ap-guangzhou.myqcloud.com/upload/images/5a9f48118166308daba8b6da7e466aab.jpg";
+
 }
