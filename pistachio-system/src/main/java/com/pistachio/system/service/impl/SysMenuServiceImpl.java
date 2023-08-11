@@ -1,13 +1,20 @@
 package com.pistachio.system.service.impl;
 
+import com.pistachio.common.core.ConvertCore;
+import com.pistachio.common.exception.ServiceException;
 import com.pistachio.system.dto.SysMenuDto;
+import com.pistachio.system.dto.req.MenuCreateRequest;
+import com.pistachio.system.dto.req.MenuUpdateRequest;
 import com.pistachio.system.entity.SysMenuEntity;
 import com.pistachio.system.repository.SysMenuRepository;
+import com.pistachio.system.repository.SysRoleMenuRepository;
 import com.pistachio.system.repository.SysUserRepository;
 import com.pistachio.system.service.ISysMenuService;
+import com.pistachio.system.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,10 +34,16 @@ import static java.util.stream.Collectors.toCollection;
 public class SysMenuServiceImpl implements ISysMenuService {
 
     @Autowired
+    private ISysUserService iSysUserService;
+
+    @Autowired
     private SysUserRepository sysUserRepository;
 
     @Autowired
     private SysMenuRepository sysMenuRepository;
+
+    @Autowired
+    private SysRoleMenuRepository sysRoleMenuRepository;
 
     @Override
     public List<SysMenuDto> getCurrentUserNav(Long id) {
@@ -49,6 +62,59 @@ public class SysMenuServiceImpl implements ISysMenuService {
         List<SysMenuEntity> sysMenus = sysMenuRepository.findAll(Sort.by("orderNum").ascending());
 
         return buildTreeMenu(sysMenus);
+    }
+
+    @Override
+    public SysMenuEntity create(MenuCreateRequest request) {
+        SysMenuEntity entity = ConvertCore.map(request, SysMenuEntity.class);
+        return save(entity);
+    }
+
+    @Transactional
+    @Override
+    public void delete(Long id) {
+        Integer count = sysMenuRepository.countAllByParentId(id);
+        if (count > 0) {
+            throw new ServiceException("请先删除子菜单");
+        }
+
+        // 清除所有与该菜单相关的权限缓存
+        iSysUserService.clearUserAuthorityInfoByMenuId(id);
+        sysMenuRepository.softDeleteById(id);
+
+        // 同步删除中间关联表
+        sysRoleMenuRepository.softDeleteByMenuId(id);
+    }
+
+    @Override
+    public SysMenuEntity edit(MenuUpdateRequest request) {
+        SysMenuEntity entity = sysMenuRepository.findFirstById(request.getId()).orElseThrow(() -> new ServiceException("数据不存在"));
+
+        entity.setParentId(request.getParentId());
+        entity.setName(request.getName());
+        entity.setPerms(request.getPerms());
+        entity.setIcon(request.getIcon());
+        entity.setPath(request.getPath());
+        entity.setComponent(request.getComponent());
+        entity.setType(request.getType());
+        entity.setStatus(request.getStatus());
+        entity.setOrderNum(request.getOrderNum());
+
+        entity = save(entity);
+
+        // 清除所有与该菜单相关的权限缓存
+        iSysUserService.clearUserAuthorityInfoByMenuId(entity.getId());
+
+        return entity;
+    }
+
+    @Override
+    public SysMenuEntity findById(Long id) {
+        return sysMenuRepository.findFirstById(id).orElseThrow(() -> new ServiceException("数据不存在"));
+    }
+
+    private SysMenuEntity save(SysMenuEntity entity) {
+        return sysMenuRepository.save(entity);
     }
 
     /**

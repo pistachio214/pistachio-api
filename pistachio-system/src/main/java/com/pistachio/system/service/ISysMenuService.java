@@ -1,6 +1,8 @@
 package com.pistachio.system.service;
 
 import com.pistachio.system.dto.SysMenuDto;
+import com.pistachio.system.dto.req.MenuCreateRequest;
+import com.pistachio.system.dto.req.MenuUpdateRequest;
 import com.pistachio.system.entity.SysMenuEntity;
 
 import java.util.List;
@@ -15,4 +17,12 @@ public interface ISysMenuService {
     List<SysMenuDto> getCurrentUserNav(Long id);
 
     List<SysMenuEntity> tree();
+
+    SysMenuEntity create(MenuCreateRequest request);
+
+    void delete(Long id);
+
+    SysMenuEntity edit(MenuUpdateRequest request);
+
+     SysMenuEntity findById(Long id);
 }

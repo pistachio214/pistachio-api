@@ -3,17 +3,13 @@ package com.pistachio.system.dto.req;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.List;
-
 /**
  * @description:
- * @date: 2023/08/10 16:57
+ * @date: 2023/08/11 10:32
  * @author: Pengsy
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class RoleUpdateRequest extends RoleCreateRequest{
+public class MenuUpdateRequest extends MenuCreateRequest{
     private Long id;
-
-    private List<Long> menuIds;
 }
