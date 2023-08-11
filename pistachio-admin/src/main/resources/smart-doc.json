@@ -1,0 +1,16 @@
+{
+  "outPath": "./../docs/smart-doc",
+  "serverUrl": "http://127.0.0.1:18004",
+  "createDebugPage": true,
+  "style": "xt256",
+  "allInOne": true,
+  "revisionLogs": [
+    {
+      "version": "1.0",
+      "revisionTime": "2023-08-11 16:53",
+      "status": "初始化",
+      "author": "Songyang Peng",
+      "remarks": "Pistachio"
+    }
+  ]
+}

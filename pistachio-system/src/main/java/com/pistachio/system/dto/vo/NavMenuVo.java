@@ -16,9 +16,21 @@ import java.util.Map;
 @Data
 public class NavMenuVo {
 
+    /**
+     * 权限标识符
+     *
+     * @mock ["sys:user:delete","sys:user:repass"]
+     * @since String[] 数组形式的权限标识符
+     */
     private String[] authoritys;
 
+    /**
+     * 菜单数据列表
+     */
     private List<SysMenuDto> navs;
 
-    private Map<String, String> user;
+    /**
+     * 用户信息
+     */
+    private NavUserVo user;
 }

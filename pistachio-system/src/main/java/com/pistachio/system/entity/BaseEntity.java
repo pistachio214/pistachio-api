@@ -24,17 +24,26 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 public class BaseEntity implements Serializable {
 
+    /**
+     * ID
+     */
     @Id
     @JsonSerialize(using = ToStringSerializer.class)
     @GenericGenerator(name = "snowFlakeIdGenerator", strategy = "com.pistachio.system.generator.SnowFlakeIdGenerator")
     @GeneratedValue(generator = "snowFlakeIdGenerator")
     private Long id;
 
+    /**
+     * 创建时间
+     */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @CreatedDate
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    /**
+     * 更新时间
+     */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @LastModifiedDate
     @Column(name = "updated_at")

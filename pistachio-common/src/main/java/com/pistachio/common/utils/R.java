@@ -15,10 +15,25 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class R<T> {
 
+    /**
+     * 状态码
+     * @mock 200
+     * @since 200、500
+     */
     private Integer code;
 
+    /**
+     * 文字描述
+     * @mock success
+     * @since success
+     */
     private String message;
 
+    /**
+     * 泛型结果
+     * @mock Object
+     * @since null or Object
+     */
     private T data;
 
     private static <T> R<T> of(Integer code, String message, T data) {

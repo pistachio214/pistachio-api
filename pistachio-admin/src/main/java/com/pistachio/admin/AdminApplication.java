@@ -11,7 +11,12 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  * @date: 2023/08/01 17:34
  * @description: 启动程序
  */
-@SpringBootApplication(scanBasePackages = {"com.pistachio.admin.*", "com.pistachio.common.*", "com.pistachio.framework.*", "com.pistachio.system.*"})
+@SpringBootApplication(scanBasePackages = {
+        "com.pistachio.admin.*",
+        "com.pistachio.common.*",
+        "com.pistachio.framework.*",
+        "com.pistachio.system.*"
+})
 @EntityScan(basePackages = "com.pistachio.system.entity")
 @EnableJpaRepositories(basePackages = "com.pistachio.system.repository")
 @EnableJpaAuditing // 开启JPA审计

@@ -65,6 +65,9 @@ public class SysMenuEntity extends BaseEntity implements Serializable {
     @Column(name = "order_num")
     private Integer orderNum;
 
+    /**
+     * @mock 1
+     */
     @Column(name = "status")
     private Integer status;
 

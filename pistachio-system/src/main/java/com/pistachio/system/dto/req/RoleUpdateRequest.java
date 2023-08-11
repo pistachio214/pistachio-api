@@ -3,6 +3,7 @@ package com.pistachio.system.dto.req;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -12,8 +13,19 @@ import java.util.List;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class RoleUpdateRequest extends RoleCreateRequest{
+public class RoleUpdateRequest extends RoleCreateRequest {
+    /**
+     * 角色id
+     *
+     * @mock 123
+     */
+    @NotNull(message = "角色id")
     private Long id;
 
+    /**
+     * 菜单id列表
+     *
+     * @mock [22, 33, 445]
+     */
     private List<Long> menuIds;
 }

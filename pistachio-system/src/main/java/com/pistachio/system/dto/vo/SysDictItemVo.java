@@ -10,7 +10,18 @@ import lombok.Data;
 @Data
 public class SysDictItemVo {
 
+    /**
+     * 字典值
+     *
+     * @mock 1
+     * @since 值
+     */
     private String value;
 
+    /**
+     * 字典标签
+     *
+     * @mock 女
+     */
     private String label;
 }

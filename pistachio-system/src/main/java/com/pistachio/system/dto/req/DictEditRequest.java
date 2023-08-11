@@ -14,6 +14,10 @@ import javax.validation.constraints.NotNull;
 @EqualsAndHashCode(callSuper = false)
 public class DictEditRequest extends DictCreateRequest {
 
+    /**
+     * 字典ID
+     * @mock 19
+     */
     @NotNull(message = "字典ID不能为空")
     private Long id;
 }

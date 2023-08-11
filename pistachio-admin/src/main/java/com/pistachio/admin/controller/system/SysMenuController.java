@@ -9,6 +9,7 @@ import com.pistachio.system.dto.SysMenuDto;
 import com.pistachio.system.dto.req.MenuCreateRequest;
 import com.pistachio.system.dto.req.MenuUpdateRequest;
 import com.pistachio.system.dto.vo.NavMenuVo;
+import com.pistachio.system.dto.vo.NavUserVo;
 import com.pistachio.system.entity.SysMenuEntity;
 import com.pistachio.system.entity.SysUserEntity;
 import com.pistachio.system.service.ISysMenuService;
@@ -18,15 +19,14 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
- * @author: Pengsy
+ * 菜单模块
+ *
+ * @author Pengsy
  * @date: 2023/08/04 15:11
- * @description: 菜单模块
  */
 @RestController
 @RequestMapping("/sys-menu")
@@ -38,6 +38,11 @@ public class SysMenuController {
     @Autowired
     private ISysMenuService iSysMenuService;
 
+    /**
+     * 获取侧边栏菜单
+     *
+     * @apiNote 需要登录权限
+     */
     @GetMapping("/nav")
     public R<NavMenuVo> nav() {
         SysUserEntity sysUser = (SysUserEntity) StpUtil.getSession().get("user");
@@ -49,26 +54,38 @@ public class SysMenuController {
         // 获取导航栏信息
         List<SysMenuDto> navs = iSysMenuService.getCurrentUserNav(sysUser.getId());
 
-        //获取用户的昵称和头像
-        Map<String, String> user = new HashMap<>();
-        user.put("nickname", sysUser.getNickname());
-        user.put("avatar", sysUser.getAvatar());
-
-        return R.success(new NavMenuVo(authorityInfoArray, navs, user));
+        return R.success(new NavMenuVo(authorityInfoArray, navs, new NavUserVo(sysUser.getNickname(), sysUser.getAvatar())));
     }
 
+    /**
+     * 菜单列表
+     *
+     * @apiNote 权限 sys:menu:list
+     */
     @GetMapping("/list")
     @SaCheckPermission("sys:menu:list")
     public R<List<SysMenuEntity>> list() {
         return R.success(iSysMenuService.tree());
     }
 
+    /**
+     * 菜单详情
+     *
+     * @param id 菜单id
+     * @apiNote 权限 sys:menu:list; 根据菜单的id，获取菜单的详情
+     */
     @GetMapping("/info/{id}")
     @SaCheckPermission("sys:menu:list")
     public R<SysMenuEntity> info(@PathVariable("id") Long id) {
         return R.success(iSysMenuService.findById(id));
     }
 
+    /**
+     * 新增菜单
+     *
+     * @param request 创建菜单数据传输对象
+     * @apiNote 权限 sys:menu:save
+     */
     @OperLog(operModul = "菜单模块 - 新增菜单", operType = OperationLogConst.SAVE, operDesc = "新增菜单")
     @SaCheckPermission("sys:menu:save")
     @PostMapping(value = "/save")
@@ -76,6 +93,12 @@ public class SysMenuController {
         return R.success(iSysMenuService.create(request));
     }
 
+    /**
+     * 删除菜单
+     *
+     * @param id 菜单ID
+     * @apiNote 权限 sys:menu:delete
+     */
     @OperLog(operModul = "菜单模块 - 删除菜单", operType = OperationLogConst.DELETE, operDesc = "删除菜单")
     @DeleteMapping("/delete/{id}")
     @SaCheckPermission("sys:menu:delete")
@@ -84,6 +107,12 @@ public class SysMenuController {
         return R.success();
     }
 
+    /**
+     * 更新菜单
+     *
+     * @param request 更新数据传输对象
+     * @apiNote 权限 sys:menu:update
+     */
     @OperLog(operModul = "菜单模块 - 更新菜单", operType = OperationLogConst.EDIT, operDesc = "更新菜单")
     @PutMapping("/update")
     @SaCheckPermission("sys:menu:update")

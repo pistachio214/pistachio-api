@@ -12,10 +12,22 @@ import lombok.Data;
 @Data
 public class ReqPageDto {
 
-    // 页码
+    //
+    /**
+     * 页码
+     *
+     * @mock 1
+     * @since 页面默认为 1
+     */
     private Integer current;
 
     //条数
+    /**
+     * 每页条数
+     *
+     * @mock 15
+     * @since 页面默认 15 条数据
+     */
     private Integer size;
 
     public Integer getCurrent() {

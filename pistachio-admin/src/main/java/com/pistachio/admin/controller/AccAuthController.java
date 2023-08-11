@@ -12,6 +12,7 @@ import com.pistachio.system.dto.vo.CaptchaImageVo;
 import com.pistachio.system.dto.vo.LoginSuccessVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import sun.misc.BASE64Encoder;
 
@@ -22,9 +23,10 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author: Pengsy
- * @date: 2023/08/02 14:45
- * @description: 登录验证控制器
+ * 验证模块
+ *
+ * @author Pengsy
+ * @date 2023/08/02 14:45
  */
 @Slf4j
 @RestController
@@ -40,6 +42,11 @@ public class AccAuthController {
     @Autowired
     private SysLoginHandle sysLoginHandle;
 
+    /**
+     * 获取验证码
+     *
+     * @apiNote 后台登录获取验证码信息
+     */
     @GetMapping("/getCaptcha")
     public R<CaptchaImageVo> caption() {
         String text = producer.createText();
@@ -72,11 +79,21 @@ public class AccAuthController {
         }
     }
 
+    /**
+     * 管理员登录
+     *
+     * @param loginRequest 登录信息传输对象
+     */
     @PostMapping("/admin/doLogin")
-    public R<LoginSuccessVo> doLogin(@RequestBody AdminLoginRequest loginRequest) {
+    public R<LoginSuccessVo> doLogin(@Validated @RequestBody AdminLoginRequest loginRequest) {
         return R.success(sysLoginHandle.doAdminLogin(loginRequest));
     }
 
+    /**
+     * 管理员退出
+     *
+     * @apiNote 需要登录后才能操作
+     */
     @GetMapping("/admin/logout")
     public R<Object> doLogout() {
         sysLoginHandle.doAdminLogout();

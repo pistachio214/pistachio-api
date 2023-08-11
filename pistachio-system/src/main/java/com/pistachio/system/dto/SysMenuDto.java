@@ -14,18 +14,39 @@ import java.util.List;
 @Data
 public class SysMenuDto implements Serializable {
 
+    /**
+     * 菜单ID
+     */
     private Long id;
 
+    /**
+     * name
+     */
     private String name;
 
+    /**
+     * 菜单标题
+     */
     private String title;
 
+    /**
+     * ICON
+     */
     private String icon;
 
+    /**
+     * 地址
+     */
     private String path;
 
+    /**
+     * 组件地址
+     */
     private String component;
 
+    /**
+     * 子级菜单
+     */
     private List<SysMenuDto> children = new ArrayList<>();
 
 }

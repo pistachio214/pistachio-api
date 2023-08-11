@@ -12,7 +12,15 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class DictListRequest extends ReqPageDto {
+
+    /**
+     * 字典类型
+     * @since 字典key dicts_type
+     */
     private Integer system;
 
+    /**
+     * 类型名称
+     */
     private String type;
 }

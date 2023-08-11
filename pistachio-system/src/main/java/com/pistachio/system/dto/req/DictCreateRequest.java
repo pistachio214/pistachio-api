@@ -12,14 +12,31 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 public class DictCreateRequest {
-    @NotBlank(message = "类型名称不能为空")
+
+    /**
+     * 类型标识
+     * @mock dict_type
+     */
+    @NotBlank(message = "类型标识不能为空")
     private String type;
 
+    /**
+     * 描述
+     * @mock 该字典的简单描述
+     */
     @NotBlank(message = "描述不能为空")
     private String description;
 
+    /**
+     * 字典类型
+     * @mock 12
+     * @since 该字典类型的ID
+     */
     @NotNull(message = "字典类型不能为空")
     private Integer system;
 
+    /**
+     * 备注
+     */
     private String remarks;
 }

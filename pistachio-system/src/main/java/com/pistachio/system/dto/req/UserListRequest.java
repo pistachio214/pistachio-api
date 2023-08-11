@@ -12,5 +12,11 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class UserListRequest extends ReqPageDto {
+
+    /**
+     * 管理员账号
+     *
+     * @mock admin
+     */
     private String username;
 }
