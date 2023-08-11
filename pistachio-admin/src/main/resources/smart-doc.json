@@ -1,7 +1,7 @@
 {
   "outPath": "./../docs/smart-doc",
   "serverUrl": "http://127.0.0.1:18004",
-  "createDebugPage": true,
+  "createDebugPage": false,
   "style": "xt256",
   "allInOne": true,
   "revisionLogs": [
