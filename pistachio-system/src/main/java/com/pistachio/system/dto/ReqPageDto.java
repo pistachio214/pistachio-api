@@ -17,7 +17,7 @@ public class ReqPageDto {
      * 页码
      *
      * @mock 1
-     * @since 页面默认为 1
+     * @since 页面默认为 第1页
      */
     private Integer current;
 
