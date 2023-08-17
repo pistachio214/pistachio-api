@@ -1,5 +1,7 @@
-package com.pistachio.admin.controller;
+package com.pistachio.admin.controller.system;
 
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.google.code.kaptcha.Producer;
 import com.pistachio.common.constant.CacheConstants;
 import com.pistachio.common.constant.Constants;
@@ -10,6 +12,8 @@ import com.pistachio.framework.security.handle.SysLoginHandle;
 import com.pistachio.system.dto.req.AdminLoginRequest;
 import com.pistachio.system.dto.vo.CaptchaImageVo;
 import com.pistachio.system.dto.vo.LoginSuccessVo;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -29,10 +33,13 @@ import java.util.concurrent.TimeUnit;
  * @date 2023/08/02 14:45
  * @order 1
  */
+
+@ApiSupport(author = "Pengsy")
+@Tag(name = "系统验证模块")
 @Slf4j
 @RestController
-@RequestMapping("/acc")
-public class AccAuthController {
+@RequestMapping("/sys-auth")
+public class SysAuthController {
 
     @Autowired
     private Producer producer;
@@ -43,11 +50,8 @@ public class AccAuthController {
     @Autowired
     private SysLoginHandle sysLoginHandle;
 
-    /**
-     * 获取验证码
-     *
-     * @apiNote 后台登录获取验证码信息
-     */
+    @ApiOperationSupport(author = "pengsy", order = 1)
+    @Operation(summary = "系统登录获取验证码信息", description = "后台登录界面获取验证码")
     @GetMapping("/getCaptcha")
     public R<CaptchaImageVo> caption() {
         String text = producer.createText();
@@ -80,11 +84,8 @@ public class AccAuthController {
         }
     }
 
-    /**
-     * 管理员登录
-     *
-     * @param loginRequest 登录信息传输对象
-     */
+    @ApiOperationSupport(author = "pengsy", order = 2)
+    @Operation(summary = "系统登录", description = "后台管理员登录系统")
     @PostMapping("/admin/doLogin")
     public R<LoginSuccessVo> doLogin(@Validated @RequestBody AdminLoginRequest loginRequest) {
         return R.success(sysLoginHandle.doAdminLogin(loginRequest));
@@ -95,6 +96,7 @@ public class AccAuthController {
      *
      * @apiNote 需要登录后才能操作
      */
+    @Operation(summary = "管理员退出", description = "管理员退出")
     @GetMapping("/admin/logout")
     public R<Object> doLogout() {
         sysLoginHandle.doAdminLogout();

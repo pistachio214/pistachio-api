@@ -25,6 +25,12 @@
             <groupId>com.pistachio</groupId>
             <artifactId>pistachio-common</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>2.2.2</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
 </project>

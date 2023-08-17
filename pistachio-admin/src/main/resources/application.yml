@@ -9,7 +9,9 @@ spring:
   devtools:
     restart:
       enabled: true
-
+  mvc:
+    path match:
+      matching-strategy: ant_path_matcher
   jpa:
     hibernate:
       ddl-auto: none
@@ -47,9 +49,9 @@ xss:
   # 匹配链接
   urlPatterns: /system/*,/monitor/*,/tool/*
 
+
 # 日志配置
 logging:
   level:
     com.pistachio: debug
     org.springframework: info
-

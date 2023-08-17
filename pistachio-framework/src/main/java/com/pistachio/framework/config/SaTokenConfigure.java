@@ -26,7 +26,7 @@ public class SaTokenConfigure implements WebMvcConfigurer {
         registry.addInterceptor(new SaInterceptor(handler -> {
             SaRouter.match("/**")
                     // 设置排除验证的路由
-                    .notMatch("/acc/admin/doLogin", "/acc/getCaptcha", "/test")
+                    .notMatch("/sys-auth/admin/doLogin", "/sys-auth/getCaptcha", "/test", "/favicon.ico", "/v3/api-docs/**", "/webjars/**", "/doc.html**", "/swagger-ui/**")
                     // 设置验证器
                     .check(r -> StpUtil.checkLogin());
         })).addPathPatterns("/**");

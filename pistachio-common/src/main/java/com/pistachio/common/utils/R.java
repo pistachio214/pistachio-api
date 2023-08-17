@@ -4,6 +4,7 @@ import com.pistachio.common.constant.HttpStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * @author: Pengsy
@@ -15,25 +16,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class R<T> {
 
-    /**
-     * 状态码
-     * @mock 200
-     * @since 200、500
-     */
+    @Schema(description = "状态码", defaultValue = "200")
     private Integer code;
 
-    /**
-     * 文字描述
-     * @mock success
-     * @since success
-     */
+    @Schema(description = "执行描述", defaultValue = "success")
     private String message;
 
-    /**
-     * 泛型结果
-     * @mock Object
-     * @since null or Object
-     */
+    @Schema(name = "data", description = "执行结果", defaultValue = "{}")
     private T data;
 
     private static <T> R<T> of(Integer code, String message, T data) {

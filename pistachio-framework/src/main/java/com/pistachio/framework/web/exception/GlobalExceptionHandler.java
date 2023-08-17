@@ -33,8 +33,10 @@ public class GlobalExceptionHandler {
      * 登录检验异常
      */
     @ExceptionHandler(NotLoginException.class)
-    public R<Object> handleNotLoginException(NotLoginException e) {
+    public R<Object> handleNotLoginException(NotLoginException e, HttpServletRequest request) {
+        String requestURI = request.getRequestURI();
         log.error(e.getMessage());
+        log.error(requestURI);
         return R.error("未登录,请登录后再操作");
     }
 
