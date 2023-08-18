@@ -54,7 +54,8 @@ public class SysUserController {
     @PostMapping("/repass")
     @SaCheckPermission("sys:user:repass")
     public R<String> repass(@RequestBody UserRepassRequest request) {
-        iSysUserService.restPassword(request.getUserId(), sysLoginHandle.rsaEncryptByPublic(UserConstants.DEFAULT_PASSWORD));
+        String password = sysLoginHandle.rsaEncryptByPublic(UserConstants.DEFAULT_PASSWORD);
+        iSysUserService.restPassword(request.getUserId(), password);
         return R.success(UserConstants.DEFAULT_PASSWORD);
     }
 
