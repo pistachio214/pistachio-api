@@ -1,5 +1,6 @@
 package com.pistachio.system.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -14,39 +15,25 @@ import java.util.List;
 @Data
 public class SysMenuDto implements Serializable {
 
-    /**
-     * 菜单ID
-     */
+    @Schema(description = "菜单ID", defaultValue = "2")
     private Long id;
 
-    /**
-     * name
-     */
+    @Schema(description = "菜单名称", defaultValue = "系统菜单名称")
     private String name;
 
-    /**
-     * 菜单标题
-     */
+    @Schema(description = "菜单标题", defaultValue = "系统菜单标题")
     private String title;
 
-    /**
-     * ICON
-     */
+    @Schema(description = "ICON", defaultValue = "ICON")
     private String icon;
 
-    /**
-     * 地址
-     */
+    @Schema(description = "指向地址", defaultValue = "/welcome")
     private String path;
 
-    /**
-     * 组件地址
-     */
+    @Schema(description = "组件地址", defaultValue = "/welcome/index")
     private String component;
 
-    /**
-     * 子级菜单
-     */
+    @Schema(description = "子级菜单")
     private List<SysMenuDto> children = new ArrayList<>();
 
 }

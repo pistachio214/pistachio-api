@@ -1,6 +1,7 @@
 package com.pistachio.system.dto.vo;
 
 import com.pistachio.system.dto.SysMenuDto;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -16,21 +17,12 @@ import java.util.Map;
 @Data
 public class NavMenuVo {
 
-    /**
-     * 权限标识符
-     *
-     * @mock ["sys:user:delete","sys:user:repass"]
-     * @since String[] 数组形式的权限标识符
-     */
+    @Schema(description = "权限标识符", defaultValue = "[\"sys:user:delete\",\"sys:user:repass\"]")
     private String[] authoritys;
 
-    /**
-     * 菜单数据列表
-     */
+    @Schema(description = "菜单数据列表")
     private List<SysMenuDto> navs;
 
-    /**
-     * 用户信息
-     */
+    @Schema(description = "用户信息")
     private NavUserVo user;
 }

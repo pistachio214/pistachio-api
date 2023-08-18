@@ -13,6 +13,8 @@ import com.pistachio.system.dto.req.AdminLoginRequest;
 import com.pistachio.system.dto.vo.CaptchaImageVo;
 import com.pistachio.system.dto.vo.LoginSuccessVo;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.extensions.Extension;
+import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +52,6 @@ public class SysAuthController {
     @Autowired
     private SysLoginHandle sysLoginHandle;
 
-    @ApiOperationSupport(author = "pengsy", order = 1)
     @Operation(summary = "系统登录获取验证码信息", description = "后台登录界面获取验证码")
     @GetMapping("/getCaptcha")
     public R<CaptchaImageVo> caption() {
@@ -84,7 +85,6 @@ public class SysAuthController {
         }
     }
 
-    @ApiOperationSupport(author = "pengsy", order = 2)
     @Operation(summary = "系统登录", description = "后台管理员登录系统")
     @PostMapping("/admin/doLogin")
     public R<LoginSuccessVo> doLogin(@Validated @RequestBody AdminLoginRequest loginRequest) {

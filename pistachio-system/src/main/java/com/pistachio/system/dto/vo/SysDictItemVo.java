@@ -1,5 +1,6 @@
 package com.pistachio.system.dto.vo;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
@@ -10,18 +11,9 @@ import lombok.Data;
 @Data
 public class SysDictItemVo {
 
-    /**
-     * 字典值
-     *
-     * @mock 1
-     * @since 值
-     */
+    @Schema(description = "字典值", defaultValue = "1")
     private String value;
 
-    /**
-     * 字典标签
-     *
-     * @mock 女
-     */
+    @Schema(description = "字典标签", defaultValue = "女")
     private String label;
 }

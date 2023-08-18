@@ -1,5 +1,6 @@
 package com.pistachio.system.dto.vo;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -12,15 +13,9 @@ import lombok.Data;
 @AllArgsConstructor
 public class NavUserVo {
 
-    /**
-     * 昵称
-     * @mock 萧十一郎
-     */
+    @Schema(description = "管理员名称", defaultValue = "萧十一郎")
     private String nickname;
 
-    /**
-     * 头像
-     * @mock https://www.xxxxx.png
-     */
+    @Schema(description = "管理员头像", defaultValue = "https://www.xxxxx.png")
     private String avatar;
 }

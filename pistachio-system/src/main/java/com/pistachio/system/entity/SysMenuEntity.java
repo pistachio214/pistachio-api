@@ -1,5 +1,6 @@
 package com.pistachio.system.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.Where;
@@ -23,54 +24,44 @@ import java.util.List;
 @Table(name = "sys_menu")
 @Where(clause = "`is_delete` = 1")
 public class SysMenuEntity extends BaseEntity implements Serializable {
-    /**
-     * 父菜单ID，一级菜单为0
-     */
+
+    @Schema(description = "父菜单ID，一级菜单为0", defaultValue = "0")
     @Column(name = "parent_id")
     private Long parentId;
 
+    @Schema(description = "菜单名称", defaultValue = "小李飞刀")
     @Column(name = "name")
     private String name;
 
-    /**
-     * 菜单URL
-     */
+    @Schema(description = "菜单URL", defaultValue = "/welcome")
     @Column(name = "path")
     private String path;
 
-    /**
-     * 授权(多个用逗号分隔，如：user:list,user:create)
-     */
+    @Schema(description = "授权(多个用逗号分隔，如：user:list,user:create)", defaultValue = "user:list")
     @Column(name = "perms")
     private String perms;
 
+    @Schema(description = "组件地址", defaultValue = "/welcome/index")
     @Column(name = "component")
     private String component;
 
-    /**
-     * 类型 0：目录 1：菜单 2：按钮
-     */
+    @Schema(description = "类型 0：目录 1：菜单 2：按钮", defaultValue = "0")
     @Column(name = "type")
     private Integer type;
 
-    /**
-     * 菜单图标
-     */
+    @Schema(description = "菜单图标", defaultValue = "icon")
     @Column(name = "icon")
     private String icon;
 
-    /**
-     * 排序
-     */
+    @Schema(description = "排序", defaultValue = "1")
     @Column(name = "order_num")
     private Integer orderNum;
 
-    /**
-     * @mock 1
-     */
+    @Schema(description = "状态", defaultValue = "1")
     @Column(name = "status")
     private Integer status;
 
+    @Schema(description = "子菜单列表")
     @Transient
     @Column(updatable = false, insertable = false)
     private List<SysMenuEntity> children = new ArrayList<>();

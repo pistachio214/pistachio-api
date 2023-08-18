@@ -1,15 +1,22 @@
 package com.pistachio.admin.controller.system;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.pistachio.common.constant.OperationLogConst;
 import com.pistachio.common.constant.UserConstants;
 import com.pistachio.common.utils.R;
 import com.pistachio.framework.annotation.OperLog;
 import com.pistachio.framework.security.handle.SysLoginHandle;
+import com.pistachio.system.dto.req.UserChangeRoleRequest;
 import com.pistachio.system.dto.req.UserCreateRequest;
 import com.pistachio.system.dto.req.UserListRequest;
+import com.pistachio.system.dto.req.UserRepassRequest;
 import com.pistachio.system.entity.SysUserEntity;
 import com.pistachio.system.service.ISysUserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
@@ -23,6 +30,8 @@ import javax.validation.constraints.NotNull;
  * @author Pengsy
  * @date: 2023/08/09 16:02
  */
+@ApiSupport(author = "Pengsy")
+@Tag(name = "管理员模块")
 @RestController
 @RequestMapping("/sys-user")
 public class SysUserController {
@@ -33,38 +42,24 @@ public class SysUserController {
     @Autowired
     private SysLoginHandle sysLoginHandle;
 
-    /**
-     * 管理员列表
-     *
-     * @param request 查询数据传输对象
-     * @apiNote 权限 sys:user:list
-     */
+    @Operation(summary = "管理员 - 列表", description = "权限 [ sys:user:list ]")
     @GetMapping("/list")
     @SaCheckPermission("sys:user:list")
     public R<Page<SysUserEntity>> list(UserListRequest request) {
         return R.success(iSysUserService.selectUserPage(request));
     }
 
-    /**
-     * 重置管理员密码
-     *
-     * @param userId 管理员id
-     * @apiNote 权限 sys:user:repass
-     */
+    @Operation(summary = "管理员 - 重置密码", description = "权限 [ sys:user:repass ]; 重置管理员密码")
     @OperLog(operModul = "管理员模块 - 重置管理员密码", operType = OperationLogConst.EDIT, operDesc = "重置管理员密码")
     @PostMapping("/repass")
     @SaCheckPermission("sys:user:repass")
-    public R<String> repass(@RequestBody @NotNull(message = "管理员id不能为空") Long userId) {
-        iSysUserService.restPassword(userId, sysLoginHandle.rsaEncryptByPublic(UserConstants.DEFAULT_PASSWORD));
+    public R<String> repass(@RequestBody UserRepassRequest request) {
+        iSysUserService.restPassword(request.getUserId(), sysLoginHandle.rsaEncryptByPublic(UserConstants.DEFAULT_PASSWORD));
         return R.success(UserConstants.DEFAULT_PASSWORD);
     }
 
-    /**
-     * 删除管理员
-     *
-     * @param id 管理员id
-     * @apiNote 权限 sys:user:delete
-     */
+    @Operation(summary = "管理员 - 删除", description = "权限 [ sys:user:delete ]; 删除管理员")
+    @Parameter(name = "id", description = "管理员id", required = true)
     @OperLog(operModul = "管理员模块 - 删除管理员", operType = OperationLogConst.DELETE, operDesc = "删除管理员")
     @DeleteMapping("/delete/{id}")
     @SaCheckPermission("sys:user:delete")
@@ -73,12 +68,7 @@ public class SysUserController {
         return R.success();
     }
 
-    /**
-     * 新增管理员
-     *
-     * @param request 数据传输对象
-     * @apiNote 权限 sys:user:save
-     */
+    @Operation(summary = "管理员 - 新增", description = "权限 [ sys:user:save ]; 新增管理员")
     @OperLog(operModul = "管理员模块 - 新增管理员", operType = OperationLogConst.SAVE, operDesc = "新增管理员")
     @PostMapping("/save")
     @SaCheckPermission("sys:user:save")
@@ -87,18 +77,13 @@ public class SysUserController {
         return R.success(iSysUserService.save(request, password));
     }
 
-    /**
-     * 管理员设置角色
-     *
-     * @param userId  管理员id
-     * @param roleIds 角色id列表
-     * @apiNote 权限 sys:user:role
-     */
+    @Operation(summary = "管理员 - 设置角色", description = "权限 [ sys:user:role ]; 管理员设置角色")
+    @Parameter(name = "userId", description = "管理员id", required = true)
     @OperLog(operModul = "管理员模块 - 管理员设置角色", operType = OperationLogConst.EDIT, operDesc = "管理员设置角色")
     @PostMapping("/role/{userId}")
     @SaCheckPermission("sys:user:role")
-    public R<Object> rolePerm(@PathVariable("userId") Long userId, @RequestBody @NotNull(message = "角色id列表") Long[] roleIds) {
-        iSysUserService.rolePerm(userId, roleIds);
+    public R<Object> rolePerm(@PathVariable("userId") Long userId, @RequestBody UserChangeRoleRequest request) {
+        iSysUserService.rolePerm(userId, request.getRoleIds());
         return R.success();
     }
 }

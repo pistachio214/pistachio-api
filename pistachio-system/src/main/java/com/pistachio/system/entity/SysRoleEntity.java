@@ -1,5 +1,6 @@
 package com.pistachio.system.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.Where;
@@ -19,35 +20,19 @@ import java.io.Serializable;
 @Where(clause = "`is_delete` = 1")
 public class SysRoleEntity extends BaseEntity implements Serializable {
 
-    /**
-     * 角色名称
-     *
-     * @mock 超级管理员
-     */
+    @Schema(description = "角色名称", defaultValue = "超级管理员")
     @Column(name = "name")
     private String name;
 
-    /**
-     * 角色标识
-     *
-     * @mock super_manager
-     */
+    @Schema(description = "角色标识", defaultValue = "super_manager")
     @Column(name = "code")
     private String code;
 
-    /**
-     * 状态
-     *
-     * @mock 1
-     */
+    @Schema(description = "状态", defaultValue = "1")
     @Column(name = "status")
     private Integer status;
 
-    /**
-     * 备注
-     *
-     * @mock 超级管理员的备注
-     */
+    @Schema(description = "备注", defaultValue = "超级管理员的备注")
     @Column(name = "remark")
     private String remark;
 

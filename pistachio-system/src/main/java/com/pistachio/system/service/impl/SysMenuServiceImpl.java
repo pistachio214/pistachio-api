@@ -5,6 +5,7 @@ import com.pistachio.common.exception.ServiceException;
 import com.pistachio.system.dto.SysMenuDto;
 import com.pistachio.system.dto.req.MenuCreateRequest;
 import com.pistachio.system.dto.req.MenuUpdateRequest;
+import com.pistachio.system.dto.vo.SysMenuListTreeVo;
 import com.pistachio.system.entity.SysMenuEntity;
 import com.pistachio.system.repository.SysMenuRepository;
 import com.pistachio.system.repository.SysRoleMenuRepository;
@@ -58,10 +59,10 @@ public class SysMenuServiceImpl implements ISysMenuService {
     }
 
     @Override
-    public List<SysMenuEntity> tree() {
+    public SysMenuListTreeVo tree() {
         List<SysMenuEntity> sysMenus = sysMenuRepository.findAll(Sort.by("orderNum").ascending());
 
-        return buildTreeMenu(sysMenus);
+        return new SysMenuListTreeVo(buildTreeMenu(sysMenus));
     }
 
     @Override

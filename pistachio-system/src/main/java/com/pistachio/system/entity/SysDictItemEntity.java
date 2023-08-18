@@ -1,5 +1,6 @@
 package com.pistachio.system.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.Where;
@@ -21,44 +22,30 @@ import java.io.Serializable;
 @Where(clause = "`is_delete` = 1")
 public class SysDictItemEntity extends BaseEntity implements Serializable {
 
-    /**
-     * 字典id
-     */
+    @Schema(description = "字典id", defaultValue = "1688794906526482433")
     @Column(name = "dict_id")
     private Long dictId;
 
-    /**
-     * 数据值
-     * @mock 1
-     */
+    @Schema(description = "数据值", defaultValue = "1")
     @Column(name = "value")
     private String value;
 
-    /**
-     * 标签名
-     * @mock 标签名称
-     */
+    @Schema(description = "标签名", defaultValue = "标签名称")
     @Column(name = "label")
     private String label;
 
     @Column(name = "type")
     private String type;
 
-    /**
-     * 描述
-     */
+    @Schema(description = "描述")
     @Column(name = "description")
     private String description;
 
-    /**
-     * 备注
-     */
+    @Schema(description = "备注")
     @Column(name = "remarks")
     private String remarks;
 
-    /**
-     * 排序
-     */
+    @Schema(description = "排序", defaultValue = "1")
     @Column(name = "sort")
     private Integer sort;
 

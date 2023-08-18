@@ -2,6 +2,7 @@ package com.pistachio.system.dto;
 
 import com.pistachio.common.constant.Constants;
 import com.pistachio.common.utils.StringUtil;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
@@ -12,22 +13,10 @@ import lombok.Data;
 @Data
 public class ReqPageDto {
 
-    //
-    /**
-     * 页码
-     *
-     * @mock 1
-     * @since 页面默认为 第1页
-     */
+    @Schema(description = "页码", defaultValue = "1")
     private Integer current;
 
-    //条数
-    /**
-     * 每页条数
-     *
-     * @mock 15
-     * @since 页面默认 15 条数据
-     */
+    @Schema(description = "条数", defaultValue = "15")
     private Integer size;
 
     public Integer getCurrent() {

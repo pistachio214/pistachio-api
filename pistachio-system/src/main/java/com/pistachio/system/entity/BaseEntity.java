@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
@@ -27,6 +28,7 @@ public class BaseEntity implements Serializable {
     /**
      * ID
      */
+    @Schema(description = "数据id", defaultValue = "1688794906526482433")
     @Id
     @JsonSerialize(using = ToStringSerializer.class)
     @GenericGenerator(name = "snowFlakeIdGenerator", strategy = "com.pistachio.system.generator.SnowFlakeIdGenerator")
@@ -36,6 +38,7 @@ public class BaseEntity implements Serializable {
     /**
      * 创建时间
      */
+    @Schema(description = "创建时间", defaultValue = "2023-08-18 10:22:59")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @CreatedDate
     @Column(name = "created_at")
@@ -44,11 +47,13 @@ public class BaseEntity implements Serializable {
     /**
      * 更新时间
      */
+    @Schema(description = "更新时间", defaultValue = "2023-08-18 10:22:59")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @LastModifiedDate
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @Schema(description = "删除标识", defaultValue = "1")
     @JsonIgnore
     @Column(name = "is_delete")
     private Integer isDelete;

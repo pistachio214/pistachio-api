@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
  * @date: 2023/08/02 14:58
  * @description: 登录对象
  */
-@Schema(description = "登录对象")
+@Schema(description = "请求传输参数")
 @Data
 public class AdminLoginRequest {
 

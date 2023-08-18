@@ -1,6 +1,7 @@
 package com.pistachio.system.dto.req;
 
 import com.pistachio.system.dto.ReqPageDto;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -9,14 +10,11 @@ import lombok.EqualsAndHashCode;
  * @date: 2023/08/09 16:05
  * @author: Pengsy
  */
+@Schema(description = "请求传输参数")
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class UserListRequest extends ReqPageDto {
 
-    /**
-     * 管理员账号
-     *
-     * @mock admin
-     */
+    @Schema(description = "管理员账号")
     private String username;
 }

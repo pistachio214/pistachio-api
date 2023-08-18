@@ -2,6 +2,7 @@ package com.pistachio.admin.controller.system;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.stp.StpUtil;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.pistachio.common.constant.OperationLogConst;
 import com.pistachio.common.utils.R;
 import com.pistachio.framework.annotation.OperLog;
@@ -10,10 +11,14 @@ import com.pistachio.system.dto.req.MenuCreateRequest;
 import com.pistachio.system.dto.req.MenuUpdateRequest;
 import com.pistachio.system.dto.vo.NavMenuVo;
 import com.pistachio.system.dto.vo.NavUserVo;
+import com.pistachio.system.dto.vo.SysMenuListTreeVo;
 import com.pistachio.system.entity.SysMenuEntity;
 import com.pistachio.system.entity.SysUserEntity;
 import com.pistachio.system.service.ISysMenuService;
 import com.pistachio.system.service.ISysUserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
@@ -28,6 +33,8 @@ import java.util.Objects;
  * @author Pengsy
  * @date: 2023/08/04 15:11
  */
+@ApiSupport(author = "Pengsy")
+@Tag(name = "菜单模块", description = "系统菜单操作")
 @RestController
 @RequestMapping("/sys-menu")
 public class SysMenuController {
@@ -38,11 +45,7 @@ public class SysMenuController {
     @Autowired
     private ISysMenuService iSysMenuService;
 
-    /**
-     * 获取侧边栏菜单
-     *
-     * @apiNote 需要登录权限
-     */
+    @Operation(summary = "登录成功后执行", description = "在登录操作之后成功后，立马执行该操作得到菜单信息和管理员个人信息")
     @GetMapping("/nav")
     public R<NavMenuVo> nav() {
         SysUserEntity sysUser = (SysUserEntity) StpUtil.getSession().get("user");
@@ -57,35 +60,22 @@ public class SysMenuController {
         return R.success(new NavMenuVo(authorityInfoArray, navs, new NavUserVo(sysUser.getNickname(), sysUser.getAvatar())));
     }
 
-    /**
-     * 菜单列表
-     *
-     * @apiNote 权限 sys:menu:list
-     */
+    @Operation(summary = "菜单 - 列表", description = "权限 [ sys:menu:list ]")
     @GetMapping("/list")
     @SaCheckPermission("sys:menu:list")
-    public R<List<SysMenuEntity>> list() {
+    public R<SysMenuListTreeVo> list() {
         return R.success(iSysMenuService.tree());
     }
 
-    /**
-     * 菜单详情
-     *
-     * @param id 菜单id
-     * @apiNote 权限 sys:menu:list; 根据菜单的id，获取菜单的详情
-     */
+    @Operation(summary = "菜单 - 详情", description = "权限 [ sys:menu:list ]; 根据菜单的id，获取菜单的详情")
+    @Parameter(name = "id", description = "菜单id", required = true)
     @GetMapping("/info/{id}")
     @SaCheckPermission("sys:menu:list")
     public R<SysMenuEntity> info(@PathVariable("id") Long id) {
         return R.success(iSysMenuService.findById(id));
     }
 
-    /**
-     * 新增菜单
-     *
-     * @param request 创建菜单数据传输对象
-     * @apiNote 权限 sys:menu:save
-     */
+    @Operation(summary = "菜单 - 新增", description = "权限 [ sys:menu:save ]; 创建新菜单")
     @OperLog(operModul = "菜单模块 - 新增菜单", operType = OperationLogConst.SAVE, operDesc = "新增菜单")
     @SaCheckPermission("sys:menu:save")
     @PostMapping(value = "/save")
@@ -93,12 +83,8 @@ public class SysMenuController {
         return R.success(iSysMenuService.create(request));
     }
 
-    /**
-     * 删除菜单
-     *
-     * @param id 菜单ID
-     * @apiNote 权限 sys:menu:delete
-     */
+    @Operation(summary = "菜单 - 删除", description = "权限 [ sys:menu:delete ]; 删除菜单")
+    @Parameter(name = "id", description = "菜单id", required = true)
     @OperLog(operModul = "菜单模块 - 删除菜单", operType = OperationLogConst.DELETE, operDesc = "删除菜单")
     @DeleteMapping("/delete/{id}")
     @SaCheckPermission("sys:menu:delete")
@@ -107,12 +93,7 @@ public class SysMenuController {
         return R.success();
     }
 
-    /**
-     * 更新菜单
-     *
-     * @param request 更新数据传输对象
-     * @apiNote 权限 sys:menu:update
-     */
+    @Operation(summary = "菜单 - 更新", description = "权限 [ sys:menu:update ]; 更新菜单")
     @OperLog(operModul = "菜单模块 - 更新菜单", operType = OperationLogConst.EDIT, operDesc = "更新菜单")
     @PutMapping("/update")
     @SaCheckPermission("sys:menu:update")
