@@ -2,6 +2,7 @@ package com.pistachio.system.repository;
 
 import com.pistachio.system.entity.SysExceptionLogEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -10,5 +11,5 @@ import org.springframework.stereotype.Repository;
  * @author: Pengsy
  */
 @Repository
-public interface SysExceptionLogRepository extends JpaRepository<SysExceptionLogEntity, Long> {
+public interface SysExceptionLogRepository extends JpaRepository<SysExceptionLogEntity, Long>, JpaSpecificationExecutor<SysExceptionLogEntity> {
 }

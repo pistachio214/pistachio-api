@@ -25,4 +25,8 @@ public interface SysRoleMenuRepository extends JpaRepository<SysRoleMenuEntity, 
     @Modifying
     @Query("update SysRoleMenuEntity as s set s.isDelete = 0 where s.menuId = ?1")
     void softDeleteByMenuId(Long menuId);
+
+    @Modifying
+    @Query("delete from SysRoleMenuEntity  as s where s.roleId = ?1")
+    void deleteAllByRoleId(Long roleId);
 }

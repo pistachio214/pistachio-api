@@ -7,7 +7,7 @@ import com.pistachio.framework.annotation.OperLog;
 import com.pistachio.system.entity.SysExceptionLogEntity;
 import com.pistachio.system.entity.SysOperLogEntity;
 import com.pistachio.system.entity.SysUserEntity;
-import com.pistachio.system.service.ISysOperLogService;
+import com.pistachio.system.service.ISysLogService;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -43,7 +43,7 @@ public class OperLogAspect {
     private String operVer;
 
     @Autowired
-    private ISysOperLogService iSysOperLogService;
+    private ISysLogService iSysOperLogService;
 
     /**
      * 设置操作日志切入点 记录操作日志 在注解的位置切入代码

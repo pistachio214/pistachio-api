@@ -35,7 +35,6 @@ import java.util.concurrent.TimeUnit;
  * @date 2023/08/02 14:45
  * @order 1
  */
-
 @ApiSupport(author = "Pengsy")
 @Tag(name = "系统验证模块")
 @Slf4j
@@ -91,11 +90,6 @@ public class SysAuthController {
         return R.success(sysLoginHandle.doAdminLogin(loginRequest));
     }
 
-    /**
-     * 管理员退出
-     *
-     * @apiNote 需要登录后才能操作
-     */
     @Operation(summary = "管理员退出", description = "管理员退出")
     @GetMapping("/admin/logout")
     public R<Object> doLogout() {

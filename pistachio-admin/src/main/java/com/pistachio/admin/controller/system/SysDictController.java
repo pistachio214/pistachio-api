@@ -22,48 +22,48 @@ import org.springframework.web.bind.annotation.*;
 @ApiSupport(author = "Pengsy")
 @Tag(name = "数据字典模块")
 @RestController
-@RequestMapping("/sys-dict")
+@RequestMapping("/developer-dict")
 public class SysDictController {
 
     @Autowired
     private ISysDictService iSysDictService;
 
-    @Operation(summary = "字典 - 列表", description = "权限 [ sys:dict:list ]")
+    @Operation(summary = "字典 - 列表", description = "权限 [ developer:dict:list ]")
     @GetMapping("/list")
-    @SaCheckPermission("sys:dict:list")
+    @SaCheckPermission("developer:dict:list")
     public R<Page<SysDictEntity>> list(DictListRequest request) {
         return R.success(iSysDictService.lists(request));
     }
 
-    @Operation(summary = "字典 - 详情", description = "权限 [ sys:dict:list ]")
+    @Operation(summary = "字典 - 详情", description = "权限 [ developer:dict:list ]")
     @Parameter(name = "id", description = "字典id", required = true)
     @GetMapping("/{id}")
-    @SaCheckPermission("sys:dict:list")
+    @SaCheckPermission("developer:dict:list")
     public R<SysDictEntity> info(@PathVariable("id") Long id) {
         return R.success(iSysDictService.findById(id));
     }
 
-    @Operation(summary = "字典 - 添加", description = "权限 [ sys:dict:save ]")
+    @Operation(summary = "字典 - 添加", description = "权限 [ developer:dict:save ]")
     @OperLog(operModul = "字典模块 - 添加字典", operType = OperationLogConst.SAVE, operDesc = "添加字典")
     @PostMapping("/save")
-    @SaCheckPermission("sys:dict:save")
+    @SaCheckPermission("developer:dict:save")
     public R<SysDictEntity> save(@Validated @RequestBody DictCreateRequest request) {
         return R.success(iSysDictService.save(request));
     }
 
-    @Operation(summary = "字典 - 更新", description = "权限 [ sys:dict:edit ]")
+    @Operation(summary = "字典 - 更新", description = "权限 [ developer:dict:edit ]")
     @OperLog(operModul = "字典模块 - 更新字典", operType = OperationLogConst.EDIT, operDesc = "更新字典")
     @PutMapping("/edit")
-    @SaCheckPermission("sys:dict:edit")
+    @SaCheckPermission("developer:dict:edit")
     public R<SysDictEntity> edit(@Validated @RequestBody DictEditRequest request) {
         return R.success(iSysDictService.edit(request));
     }
 
-    @Operation(summary = "字典 - 删除", description = "权限 [ sys:dict:delete ]")
+    @Operation(summary = "字典 - 删除", description = "权限 [ developer:dict:delete ]")
     @Parameter(name = "id", description = "字典id", required = true)
     @OperLog(operModul = "字典模块 - 删除字典", operType = OperationLogConst.DELETE, operDesc = "删除字典")
     @DeleteMapping("/{id}")
-    @SaCheckPermission("sys:dict:delete")
+    @SaCheckPermission("developer:dict:delete")
     public R<Object> delete(@PathVariable("id") Long id) {
         iSysDictService.softDelete(id);
         return R.success();

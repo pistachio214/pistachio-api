@@ -85,5 +85,6 @@ public class AdminApplicationTests {
 
     @Test
     void testSqlResultSetMapping() {
+
     }
 }
