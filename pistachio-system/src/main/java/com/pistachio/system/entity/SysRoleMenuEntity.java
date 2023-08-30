@@ -1,5 +1,7 @@
 package com.pistachio.system.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.DynamicUpdate;
@@ -22,9 +24,11 @@ import java.io.Serializable;
 @Where(clause = "`is_delete` = 1")
 public class SysRoleMenuEntity extends BaseEntity implements Serializable {
 
+    @JsonSerialize(using = ToStringSerializer.class)
     @Column(name = "role_id")
     private Long roleId;
 
+    @JsonSerialize(using = ToStringSerializer.class)
     @Column(name = "menu_id")
     private Long menuId;
 

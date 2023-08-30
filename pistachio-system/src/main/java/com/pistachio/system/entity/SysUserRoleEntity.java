@@ -1,5 +1,7 @@
 package com.pistachio.system.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.Where;
@@ -19,6 +21,7 @@ import java.io.Serializable;
 @Where(clause = "`is_delete` = 1")
 public class SysUserRoleEntity extends BaseEntity implements Serializable {
 
+    @JsonSerialize(using = ToStringSerializer.class)
     @Column(name = "user_id")
     private Long userId;
 

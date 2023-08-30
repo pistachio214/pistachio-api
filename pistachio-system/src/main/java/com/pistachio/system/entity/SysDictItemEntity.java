@@ -1,5 +1,7 @@
 package com.pistachio.system.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,6 +25,7 @@ import java.io.Serializable;
 public class SysDictItemEntity extends BaseEntity implements Serializable {
 
     @Schema(description = "字典id", defaultValue = "1688794906526482433")
+    @JsonSerialize(using = ToStringSerializer.class)
     @Column(name = "dict_id")
     private Long dictId;
 

@@ -1,5 +1,7 @@
 package com.pistachio.system.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -26,6 +28,7 @@ import java.util.List;
 public class SysMenuEntity extends BaseEntity implements Serializable {
 
     @Schema(description = "父菜单ID，一级菜单为0", defaultValue = "0")
+    @JsonSerialize(using = ToStringSerializer.class)
     @Column(name = "parent_id")
     private Long parentId;
 

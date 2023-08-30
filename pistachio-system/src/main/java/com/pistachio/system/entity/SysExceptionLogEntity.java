@@ -1,5 +1,7 @@
 package com.pistachio.system.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -39,6 +41,7 @@ public class SysExceptionLogEntity extends BaseEntity implements Serializable {
     private String excMessage;
 
     @Schema(description = "操作者id", defaultValue = "1")
+    @JsonSerialize(using = ToStringSerializer.class)
     @Column(name = "oper_user_id")
     private Long operUserId;
 

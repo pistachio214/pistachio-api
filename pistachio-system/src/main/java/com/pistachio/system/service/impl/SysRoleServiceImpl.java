@@ -73,7 +73,12 @@ public class SysRoleServiceImpl implements ISysRoleService {
         SysRoleEntity roleEntity = sysRoleRepository.findFirstById(id).orElseThrow(() -> new ServiceException("角色信息不存在"));
 
         List<SysRoleMenuEntity> roleMenus = sysRoleMenuRepository.findAllByRoleId(id);
-        List<Long> menuIds = roleMenus.stream().map(SysRoleMenuEntity::getMenuId).collect(Collectors.toList());
+
+        List<String> menuIds = new ArrayList<>();
+
+        roleMenus.forEach(sysRoleMenuEntity -> {
+            menuIds.add(sysRoleMenuEntity.getMenuId().toString());
+        });
 
         SysRoleAndMenuIdsVo vo = ConvertCore.map(roleEntity, SysRoleAndMenuIdsVo.class);
         vo.setMenuIds(menuIds);
