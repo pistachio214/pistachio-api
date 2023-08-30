@@ -130,6 +130,7 @@ public class SysUserServiceImpl implements ISysUserService {
         });
     }
 
+    @Transactional
     @Override
     public void rolePerm(Long userId, Long[] roleIds) {
         List<SysUserRoleEntity> userRoles = new ArrayList<>();
