@@ -82,6 +82,10 @@ public class SysLogServiceImpl implements ISysLogService {
                 predicateList.add(criteriaBuilder.between(root.get("createdAt"), request.getStartAt(), request.getEndAt()));
             }
 
+            if (!StringUtil.isEmpty(request.getOperUserName())) {
+                predicateList.add(criteriaBuilder.like(root.get("operUserName"), "%" + request.getOperUserName() + "%"));
+            }
+
             return query.where(predicateList.toArray(new Predicate[0])).getRestriction();
         }, pageable);
     }
