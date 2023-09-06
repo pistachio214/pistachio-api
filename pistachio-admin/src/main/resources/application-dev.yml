@@ -4,6 +4,13 @@ pistachio:
   version: 0.0.1
   copyrightYear: 2023
 
+# minio 配置
+minio:
+  endpoint: http://123.57.48.127:9000
+  accessKey: admin
+  secretKey: admin123456
+  bucketName: mlcloud
+
 # 开发环境配置
 server:
   port: 18004
@@ -53,6 +60,9 @@ springdoc:
     - group: '系统管理模块'
       paths-to-match: '/**'
       packages-to-scan: 'com.pistachio.admin.controller.system'
+    - group: "上传模块"
+      paths-to-match: "/**"
+      packages-to-scan: "com.pistachio.admin.controller.upload"
 knife4j:
   enable: true
   setting:

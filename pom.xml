@@ -23,6 +23,7 @@
         <gson.version>2.10.1</gson.version>
         <orika.version>1.5.4</orika.version>
         <jwt.version>0.9.1</jwt.version>
+        <minio.version>7.1.0</minio.version>
         <kaptcha.version>0.0.9</kaptcha.version>
         <springdoc-openapi-ui.version>1.6.9</springdoc-openapi-ui.version>
         <knife4j.version>4.3.0-SNAPSHOT</knife4j.version>
@@ -192,6 +193,13 @@
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-ui</artifactId>
                 <version>${springdoc-openapi-ui.version}</version>
+            </dependency>
+
+            <!-- minio服务 -->
+            <dependency>
+                <groupId>io.minio</groupId>
+                <artifactId>minio</artifactId>
+                <version>${minio.version}</version>
             </dependency>
 
             <dependency>
