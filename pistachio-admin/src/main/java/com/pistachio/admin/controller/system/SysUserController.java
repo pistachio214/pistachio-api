@@ -1,6 +1,7 @@
 package com.pistachio.admin.controller.system;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.dev33.satoken.stp.StpUtil;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.pistachio.common.constant.OperationLogConst;
 import com.pistachio.common.constant.UserConstants;
@@ -86,5 +87,14 @@ public class SysUserController {
     public R<Object> rolePerm(@PathVariable("userId") Long userId, @RequestBody UserChangeRoleRequest request) {
         iSysUserService.rolePerm(userId, request.getRoleIds());
         return R.success();
+    }
+
+    @Operation(summary = "展示管理员详情数据", description = "点击管理员个人信息的时候，弹窗展示管理员详情")
+    @GetMapping("/info")
+    public R<SysUserEntity> findCurrentUser() {
+        SysUserEntity sysUser = (SysUserEntity) StpUtil.getSession().get("user");
+        sysUser.setPassword(null);
+
+        return R.success(sysUser);
     }
 }
