@@ -213,9 +213,4 @@ public class SysUserServiceImpl implements ISysUserService {
         return save(userEntity);
     }
 
-    @Override
-    public void changePassword(UserChangePasswordRequest request) {
-
-
-    }
 }

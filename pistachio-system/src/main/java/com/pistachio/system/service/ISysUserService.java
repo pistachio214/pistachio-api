@@ -45,6 +45,4 @@ public interface ISysUserService {
 
     SysUserEntity editSysUser(UserEditRequest request);
 
-    void changePassword(UserChangePasswordRequest request);
-
 }
