@@ -1,6 +1,8 @@
 package com.pistachio.system.service;
 
+import com.pistachio.system.dto.req.UserChangePasswordRequest;
 import com.pistachio.system.dto.req.UserCreateRequest;
+import com.pistachio.system.dto.req.UserEditRequest;
 import com.pistachio.system.dto.req.UserListRequest;
 import com.pistachio.system.entity.SysUserEntity;
 import org.springframework.data.domain.Page;
@@ -40,5 +42,9 @@ public interface ISysUserService {
     void deleteSysUser(Long id);
 
     SysUserEntity save(UserCreateRequest request, String password);
+
+    SysUserEntity editSysUser(UserEditRequest request);
+
+    void changePassword(UserChangePasswordRequest request);
 
 }

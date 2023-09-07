@@ -9,6 +9,7 @@ import com.pistachio.common.enums.LoginDeviceEnum;
 import com.pistachio.common.exception.ServiceException;
 import com.pistachio.common.utils.StringUtil;
 import com.pistachio.system.dto.req.AdminLoginRequest;
+import com.pistachio.system.dto.req.UserChangePasswordRequest;
 import com.pistachio.system.dto.vo.LoginSuccessVo;
 import com.pistachio.system.entity.SysUserEntity;
 import com.pistachio.system.repository.SysUserRepository;
@@ -48,11 +49,7 @@ public class SysLoginHandle {
     public LoginSuccessVo doAdminLogin(AdminLoginRequest adminLoginRequest) {
         validateCaptcha(adminLoginRequest.getCode(), adminLoginRequest.getUuid());
 
-        SysUserEntity sysUser = sysUserRepository.findFirstByUsername(adminLoginRequest.getUsername()).orElse(null);
-
-        if (sysUser == null) {
-            throw new ServiceException("没有该账号信息");
-        }
+        SysUserEntity sysUser = sysUserRepository.findFirstByUsername(adminLoginRequest.getUsername()).orElseThrow(() -> new ServiceException(("没有该账号信息")));
 
         String password = adminLoginRequest.getPassword();
         if (!SaSecureUtil.rsaDecryptByPrivate(privateKey, sysUser.getPassword()).equals(password)) {
@@ -118,5 +115,27 @@ public class SysLoginHandle {
         }
     }
 
+    public void changePassword(UserChangePasswordRequest request) {
+
+        if (request.getNewPassword().length() < 8 || request.getNewPassword().length() > 18) {
+            throw new ServiceException("新密码长度只能是 8~18位");
+        }
+
+        if (!request.getNewPassword().equals(request.getConfirmPassword())) {
+            throw new ServiceException("两次输入的密码不相同");
+        }
+
+        SysUserEntity userEntity = (SysUserEntity) StpUtil.getSession().get("user");
+
+        SysUserEntity sysUser = sysUserRepository.findFirstById(userEntity.getId()).orElseThrow(() -> new ServiceException("没有找到账户信息"));
+
+        if (!SaSecureUtil.rsaDecryptByPrivate(privateKey, sysUser.getPassword()).equals(request.getOldPassword())) {
+            throw new ServiceException("原密码不正确");
+        }
+
+        sysUser.setPassword(rsaEncryptByPublic(request.getNewPassword()));
+
+        sysUserRepository.save(sysUser);
+    }
 
 }

@@ -4,8 +4,11 @@ import com.pistachio.common.constant.UserConstants;
 import com.pistachio.common.core.ConvertCore;
 import com.pistachio.common.core.redis.RedisCache;
 import com.pistachio.common.exception.ServiceException;
+import com.pistachio.common.utils.R;
 import com.pistachio.common.utils.StringUtil;
+import com.pistachio.system.dto.req.UserChangePasswordRequest;
 import com.pistachio.system.dto.req.UserCreateRequest;
+import com.pistachio.system.dto.req.UserEditRequest;
 import com.pistachio.system.dto.req.UserListRequest;
 import com.pistachio.system.entity.SysMenuEntity;
 import com.pistachio.system.entity.SysRoleEntity;
@@ -197,5 +200,22 @@ public class SysUserServiceImpl implements ISysUserService {
 
     private SysUserEntity save(SysUserEntity entity) {
         return sysUserRepository.save(entity);
+    }
+
+    @Override
+    public SysUserEntity editSysUser(UserEditRequest request) {
+        SysUserEntity userEntity = findById(request.getId());
+
+        userEntity.setAvatar(request.getAvatar());
+        userEntity.setEmail(request.getEmail());
+        userEntity.setNickname(request.getNickname());
+
+        return save(userEntity);
+    }
+
+    @Override
+    public void changePassword(UserChangePasswordRequest request) {
+
+
     }
 }

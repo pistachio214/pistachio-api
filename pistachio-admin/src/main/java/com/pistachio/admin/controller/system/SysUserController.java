@@ -8,22 +8,16 @@ import com.pistachio.common.constant.UserConstants;
 import com.pistachio.common.utils.R;
 import com.pistachio.framework.annotation.OperLog;
 import com.pistachio.framework.security.handle.SysLoginHandle;
-import com.pistachio.system.dto.req.UserChangeRoleRequest;
-import com.pistachio.system.dto.req.UserCreateRequest;
-import com.pistachio.system.dto.req.UserListRequest;
-import com.pistachio.system.dto.req.UserRepassRequest;
+import com.pistachio.system.dto.req.*;
 import com.pistachio.system.entity.SysUserEntity;
 import com.pistachio.system.service.ISysUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * 系统管理员模块
@@ -93,8 +87,27 @@ public class SysUserController {
     @GetMapping("/info")
     public R<SysUserEntity> findCurrentUser() {
         SysUserEntity sysUser = (SysUserEntity) StpUtil.getSession().get("user");
-        sysUser.setPassword(null);
+        SysUserEntity result = iSysUserService.findById(sysUser.getId());
+        result.setPassword(null);
 
-        return R.success(sysUser);
+        return R.success(result);
     }
+
+    @Operation(summary = "编辑展示管理员详情数据", description = "点击管理员个人信息的时候，编辑管理员详情")
+    @PostMapping("/info/save")
+    public R<SysUserEntity> editUser(@RequestBody UserEditRequest request) {
+        SysUserEntity sysUser = (SysUserEntity) StpUtil.getSession().get("user");
+        request.setId(sysUser.getId());
+
+        return R.success(iSysUserService.editSysUser(request));
+    }
+
+    @Operation(summary = "编辑展示管理员详情数据", description = "点击管理员个人信息的时候，编辑管理员详情")
+    @PostMapping("/change/password")
+    public R<SysUserEntity> changePassword(@RequestBody UserChangePasswordRequest request) {
+        sysLoginHandle.changePassword(request);
+        return R.success();
+    }
+
+
 }

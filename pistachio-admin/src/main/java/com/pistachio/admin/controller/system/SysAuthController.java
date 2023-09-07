@@ -1,6 +1,5 @@
 package com.pistachio.admin.controller.system;
 
-import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.google.code.kaptcha.Producer;
 import com.pistachio.common.constant.CacheConstants;
@@ -13,8 +12,6 @@ import com.pistachio.system.dto.req.AdminLoginRequest;
 import com.pistachio.system.dto.vo.CaptchaImageVo;
 import com.pistachio.system.dto.vo.LoginSuccessVo;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.extensions.Extension;
-import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

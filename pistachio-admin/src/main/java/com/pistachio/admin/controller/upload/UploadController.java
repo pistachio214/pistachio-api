@@ -2,6 +2,7 @@ package com.pistachio.admin.controller.upload;
 
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.pistachio.common.constant.OperationLogConst;
+import com.pistachio.common.constant.UserConstants;
 import com.pistachio.common.utils.R;
 import com.pistachio.framework.annotation.OperLog;
 import com.pistachio.framework.minio.IMinioService;
@@ -35,23 +36,25 @@ public class UploadController {
     @OperLog(operModul = "上传模块 - 单文件图片上传", operType = OperationLogConst.UPLOAD, operDesc = "单文件图片上传")
     @Operation(summary = "上传模块 - 单文件图片上传", description = "单文件图片上传")
     @PostMapping("/file")
-    public R<Object> uploadFile(@RequestParam(name = "file", required = false) MultipartFile file) {
-        try {
-            //得到文件流
-            InputStream is = file.getInputStream();
-            //文件名
-            String fileName = file.getOriginalFilename();
-            String newFileName = UUID.randomUUID() + "-" + System.currentTimeMillis() + "." + StringUtils.substringAfterLast(fileName, ".");
-            //类型
-            String contentType = file.getContentType();
-            iMinioService.uploadObject(is, newFileName, contentType);
+    public R<Object> uploadFile(@RequestParam(name = "file", required = true) MultipartFile file) {
 
-            String url = iMinioService.getObjectUrl(newFileName);
-            return R.success(newFileName);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return R.error("上传失败");
-        }
+        return R.success(UserConstants.DEFAULT_AVATAR);
+//        try {
+//            //得到文件流
+//            InputStream is = file.getInputStream();
+//            //文件名
+//            String fileName = file.getOriginalFilename();
+//            String newFileName = UUID.randomUUID() + "-" + System.currentTimeMillis() + "." + StringUtils.substringAfterLast(fileName, ".");
+//            //类型
+//            String contentType = file.getContentType();
+//            iMinioService.uploadObject(is, newFileName, contentType);
+//
+//            String url = iMinioService.getObjectUrl(newFileName);
+//            return R.success(newFileName);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return R.error("上传失败");
+//        }
     }
 
 }
