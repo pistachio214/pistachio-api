@@ -49,7 +49,7 @@ public class SysLoginHandle {
     public LoginSuccessVo doAdminLogin(AdminLoginRequest adminLoginRequest) {
         validateCaptcha(adminLoginRequest.getCode(), adminLoginRequest.getUuid());
 
-        SysUserEntity sysUser = sysUserRepository.findFirstByUsername(adminLoginRequest.getUsername()).orElseThrow(() -> new ServiceException(("没有该账号信息")));
+        SysUserEntity sysUser = sysUserRepository.findFirstByUsernameAndStatus(adminLoginRequest.getUsername(), 1).orElseThrow(() -> new ServiceException(("没有该账号信息")));
 
         String password = adminLoginRequest.getPassword();
         if (!SaSecureUtil.rsaDecryptByPrivate(privateKey, sysUser.getPassword()).equals(password)) {
