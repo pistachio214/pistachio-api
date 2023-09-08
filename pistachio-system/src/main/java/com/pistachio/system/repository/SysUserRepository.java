@@ -18,7 +18,9 @@ import java.util.Optional;
 @Repository
 public interface SysUserRepository extends JpaRepository<SysUserEntity, Long>, JpaSpecificationExecutor<SysUserEntity> {
 
-    Optional<SysUserEntity> findFirstByUsernameAndStatus(String username, Integer status);
+    Optional<SysUserEntity> findFirstByUsername(String username);
+
+    Optional<SysUserEntity> findFirstByUsernameAndType(String username, Integer type);
 
     Optional<SysUserEntity> findFirstById(Long id);
 

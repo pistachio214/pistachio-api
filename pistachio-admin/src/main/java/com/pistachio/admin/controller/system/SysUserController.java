@@ -109,5 +109,26 @@ public class SysUserController {
         return R.success();
     }
 
+    @Operation(summary = "管理员 - 停用管理员", description = "权限 [ sys:user:disable ]; 停用管理员")
+    @Parameter(name = "id", description = "管理员id", required = true)
+    @OperLog(operModul = "管理员模块 - 停用管理员", operType = OperationLogConst.EDIT, operDesc = "停用管理员")
+    @SaCheckPermission("sys:user:disable")
+    @GetMapping("/disable/{id}")
+    public R<Object> disableSysUser(@PathVariable("id") Long id) {
+        sysLoginHandle.disableSysUser(id);
+
+        return R.success();
+    }
+
+    @Operation(summary = "管理员 - 启用管理员", description = "权限 [ sys:user:enable ]; 启用管理员")
+    @Parameter(name = "id", description = "管理员id", required = true)
+    @OperLog(operModul = "管理员模块 - 启用管理员", operType = OperationLogConst.EDIT, operDesc = "启用管理员")
+    @SaCheckPermission("sys:user:enable")
+    @GetMapping("/enable/{id}")
+    public R<Object> enableSysUser(@PathVariable("id") Long id) {
+        sysLoginHandle.enableSysUser(id);
+
+        return R.success();
+    }
 
 }

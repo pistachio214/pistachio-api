@@ -4,6 +4,7 @@ import cn.dev33.satoken.secure.SaSecureUtil;
 import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
 import com.pistachio.common.constant.CacheConstants;
+import com.pistachio.common.constant.UserConstants;
 import com.pistachio.common.core.redis.RedisCache;
 import com.pistachio.common.enums.LoginDeviceEnum;
 import com.pistachio.common.exception.ServiceException;
@@ -49,7 +50,11 @@ public class SysLoginHandle {
     public LoginSuccessVo doAdminLogin(AdminLoginRequest adminLoginRequest) {
         validateCaptcha(adminLoginRequest.getCode(), adminLoginRequest.getUuid());
 
-        SysUserEntity sysUser = sysUserRepository.findFirstByUsernameAndStatus(adminLoginRequest.getUsername(), 1).orElseThrow(() -> new ServiceException(("没有该账号信息")));
+        SysUserEntity sysUser = sysUserRepository.findFirstByUsernameAndType(adminLoginRequest.getUsername(), UserConstants.USER_TYPE_MANAGER).orElseThrow(() -> new ServiceException(("没有该管理员信息")));
+
+        if (!UserConstants.STATUS_ON.equals(sysUser.getStatus())) {
+            throw new ServiceException("管理员处于禁止状态,如需登录,请联系管理员！");
+        }
 
         String password = adminLoginRequest.getPassword();
         if (!SaSecureUtil.rsaDecryptByPrivate(privateKey, sysUser.getPassword()).equals(password)) {
@@ -70,7 +75,6 @@ public class SysLoginHandle {
 
         //获取到token给到标准返回
         return new LoginSuccessVo(StpUtil.getTokenInfo().getTokenName(), StpUtil.getTokenInfo().getTokenValue(), tokenPrefix);
-
     }
 
     /**
@@ -115,6 +119,11 @@ public class SysLoginHandle {
         }
     }
 
+    /**
+     * 修改密码
+     *
+     * @param request 修改密码数据传输对象
+     */
     public void changePassword(UserChangePasswordRequest request) {
 
         if (request.getNewPassword().length() < 8 || request.getNewPassword().length() > 18) {
@@ -136,6 +145,49 @@ public class SysLoginHandle {
         sysUser.setPassword(rsaEncryptByPublic(request.getNewPassword()));
 
         sysUserRepository.save(sysUser);
+    }
+
+    /**
+     * 禁用管理员
+     *
+     * @param id 管理员id
+     */
+    public void disableSysUser(Long id) {
+        SysUserEntity sysUser = sysUserRepository.findFirstById(id).orElseThrow(() -> new ServiceException("没有找到管理员"));
+        if (!UserConstants.STATUS_ON.equals(sysUser.getStatus())) {
+            throw new ServiceException("管理员不处于启用状态,请勿重复禁止");
+        }
+
+        sysUser.setStatus(UserConstants.STATUS_OFF);
+
+        sysUserRepository.save(sysUser);
+
+        kickout(id);
+    }
+
+    /**
+     * 启用管理员
+     *
+     * @param id 管理员id
+     */
+    public void enableSysUser(Long id) {
+        SysUserEntity sysUser = sysUserRepository.findFirstById(id).orElseThrow(() -> new ServiceException("没有找到管理员"));
+        if (UserConstants.STATUS_ON.equals(sysUser.getStatus())) {
+            throw new ServiceException("管理员处于启用状态,请勿重复启用");
+        }
+
+        sysUser.setStatus(UserConstants.STATUS_ON);
+
+        sysUserRepository.save(sysUser);
+    }
+
+    /**
+     * 踢人下线
+     *
+     * @param id 管理员id
+     */
+    public void kickout(Long id) {
+        StpUtil.kickout(id);
     }
 
 }

@@ -61,26 +61,23 @@ public class SysUserServiceImpl implements ISysUserService {
     public String getUserAuthorityInfo(Long userId) {
         String authority = "";
 
-        SysUserEntity sysUser = sysUserRepository.findFirstById(userId).orElse(null);
-        if (sysUser != null) {
-            String key = "GrantedAuthority:" + sysUser.getId();
+        SysUserEntity sysUser = sysUserRepository.findFirstById(userId).orElseThrow(() -> new ServiceException("管理员信息不存在"));
+        String key = "GrantedAuthority:" + sysUser.getId();
 
-            List<SysRoleEntity> roles = sysRoleRepository.getUserAuthority(userId);
-            if (roles.size() > 0) {
-                String roleCodes = roles.stream().map(r -> "ROLE_" + r.getCode()).collect(Collectors.joining(","));
-                authority = roleCodes.concat(",");
-            }
-
-            List<Long> menuIds = sysUserRepository.getNavMenuIds(userId);
-            if (menuIds.size() > 0) {
-                List<SysMenuEntity> menus = sysMenuRepository.listByIds(menuIds);
-                String menuPerms = menus.stream().map(SysMenuEntity::getPerms).collect(Collectors.joining(","));
-                authority = authority.concat(menuPerms);
-            }
-
-            redisCache.setCacheObject(key, authority, 60, TimeUnit.MINUTES);
+        List<SysRoleEntity> roles = sysRoleRepository.getUserAuthority(userId);
+        if (roles.size() > 0) {
+            String roleCodes = roles.stream().map(r -> "ROLE_" + r.getCode()).collect(Collectors.joining(","));
+            authority = roleCodes.concat(",");
         }
 
+        List<Long> menuIds = sysUserRepository.getNavMenuIds(userId);
+        if (menuIds.size() > 0) {
+            List<SysMenuEntity> menus = sysMenuRepository.listByIds(menuIds);
+            String menuPerms = menus.stream().map(SysMenuEntity::getPerms).collect(Collectors.joining(","));
+            authority = authority.concat(menuPerms);
+        }
+
+        redisCache.setCacheObject(key, authority, 60, TimeUnit.MINUTES);
 
         return authority;
     }
@@ -192,6 +189,7 @@ public class SysUserServiceImpl implements ISysUserService {
     @Override
     public SysUserEntity save(UserCreateRequest request, String password) {
         SysUserEntity entity = ConvertCore.map(request, SysUserEntity.class);
+        entity.setType(UserConstants.USER_TYPE_MANAGER);
         entity.setPassword(password);
         entity.setAvatar(UserConstants.DEFAULT_AVATAR);
 
