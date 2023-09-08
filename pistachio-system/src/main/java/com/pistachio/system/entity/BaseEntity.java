@@ -25,9 +25,6 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 public class BaseEntity implements Serializable {
 
-    /**
-     * ID
-     */
     @Schema(description = "数据id", defaultValue = "1688794906526482433")
     @Id
     @JsonSerialize(using = ToStringSerializer.class)
@@ -35,18 +32,12 @@ public class BaseEntity implements Serializable {
     @GeneratedValue(generator = "snowFlakeIdGenerator")
     private Long id;
 
-    /**
-     * 创建时间
-     */
     @Schema(description = "创建时间", defaultValue = "2023-08-18 10:22:59")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @CreatedDate
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    /**
-     * 更新时间
-     */
     @Schema(description = "更新时间", defaultValue = "2023-08-18 10:22:59")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @LastModifiedDate
