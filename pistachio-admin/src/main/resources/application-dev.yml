@@ -6,10 +6,10 @@ pistachio:
 
 # minio 配置
 minio:
-  endpoint: http://123.57.48.127:9000
+  endpoint: http://192.168.2.109:9000
   accessKey: admin
   secretKey: admin123456
-  bucketName: mlcloud
+  bucketName: ruxiaoyi-cloud
 
 # 开发环境配置
 server:
