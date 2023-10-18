@@ -714,35 +714,33 @@ DROP TABLE IF EXISTS `sys_user`;
 
 CREATE TABLE `sys_user`
 (
-    `id`         bigint(20) NOT NULL AUTO_INCREMENT,
-    `nickname`   varchar(64)  DEFAULT NULL COMMENT '昵称',
-    `username`   varchar(64)  DEFAULT NULL,
-    `password`   varchar(256) DEFAULT NULL,
-    `type`       int(11)      DEFAULT '1' COMMENT '用户类型: 1管理员; 2普通用户; ',
-    `avatar`     varchar(255) DEFAULT NULL,
-    `email`      varchar(64)  DEFAULT NULL,
-    `city`       varchar(64)  DEFAULT NULL,
-    `last_login` datetime     DEFAULT NULL,
-    `created_at` datetime   NOT NULL,
-    `updated_at` datetime     DEFAULT NULL,
-    `status`     int(11)    NOT NULL,
-    `is_delete`  int(11)      DEFAULT '1' COMMENT '删除标识',
-    PRIMARY KEY (`id`),
-    UNIQUE KEY `UK_USERNAME` (`username`) USING BTREE
+    `id`                      int          NOT NULL AUTO_INCREMENT,
+    `account`                 varchar(32)  NOT NULL COMMENT '账号',
+    `user_name`               varchar(32)  NOT NULL COMMENT '用户名',
+    `password`                varchar(64)           DEFAULT NULL COMMENT '用户密码',
+    `type`                    int                   DEFAULT '1' COMMENT '类型 1管理员 2普通用户',
+    `avatar`                  varchar(255) NOT NULL COMMENT '头像',
+    `last_login_time`         datetime              DEFAULT NULL COMMENT '上一次登录时间',
+    `enabled`                 tinyint(1)            DEFAULT '1' COMMENT '账号是否可用。默认为1（可用）',
+    `account_non_expired`     tinyint(1)            DEFAULT '1' COMMENT '是否过期。默认为1（没有过期）',
+    `account_non_locked`      tinyint(1)            DEFAULT '1' COMMENT '账号是否锁定。默认为1（没有锁定）',
+    `credentials_non_expired` tinyint(1)            DEFAULT '1' COMMENT '证书（密码）是否过期。默认为1（没有过期）',
+    `created_at`              timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updated_at`              timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `is_delete`               int                   DEFAULT '1',
+    PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 1689541974618537987
-  DEFAULT CHARSET = utf8 COMMENT ='系统用户表';
+  AUTO_INCREMENT = 3
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='用户表';
 
-insert into `sys_user`(`id`, `nickname`, `username`, `password`, `type`, `avatar`, `email`, `city`, `last_login`,
-                       `created_at`, `updated_at`, `status`, `is_delete`)
-values (1, '超级管理员', 'admin',
-        '7533cd73daf8f5f723a97b6728f24bd9bb7d3c032ae7bd95b4928242e75aa1c1babed5aa3040294d63297186e8d4baf4f3c241ca27afb393c80d90de8a2e8b081a6938f2ab0c319a43d506170c602e951df13fc1104e36847dec3f00c8abfa1ed7bd6860b7d05918b6e98e6502da49942ac8f8eef69d7a7be0359c279d68e2bd',
-        1, NULL, NULL, NULL, NULL, '2021-10-02 22:44:46', NULL, 1, 1),
-       (1689541974618537986, '测试管理员', 'test_user',
-        '0b02361c545e299b2a90ce35c67485e98c045e46ca75cf9913f78b1def7ede1af77908192c2ccc1878d1cefbfcf70bdbae3b96b1c164d61f97a3a9c56fcb8988cd63b9bc1253ba0e916bec1b5022c3333cc302a7c9ac91a24d3a1acc673afd2f8c4adacef8297f7421c45d0deadac2bd5314aeec289490492236ad9687455248',
-        NULL,
-        'https://image-1300566513.cos.ap-guangzhou.myqcloud.com/upload/images/5a9f48118166308daba8b6da7e466aab.jpg',
-        'test_user@qq.com', NULL, NULL, '2023-08-10 15:39:32', '2023-08-10 15:39:32', 1, 1);
+insert into `sys_user`(`id`, `account`, `user_name`, `password`, `type`, `avatar`, `last_login_time`, `enabled`,
+                       `account_non_expired`, `account_non_locked`, `credentials_non_expired`, `created_at`,
+                       `updated_at`, `is_delete`)
+values (1, 'admin', '用户1', '$2a$10$8KhxeonB.w6AQgBlimV/G.lHBvPuieu.E4K2tS7.HIsMHTM9mSGtO', 1, '',
+        '2019-09-04 20:25:36', 1, 1, 1, 1, '2023-10-16 11:18:35', '2023-10-18 12:54:44', 1),
+       (2, 'user2', '用户2', '$2a$10$uSLAeON6HWrPbPCtyqPRj.hvZfeM.tiVDZm24/gRqm4opVze1cVvC', 1, '',
+        '2019-09-05 00:07:12', 1, 1, 1, 1, '2023-10-16 11:18:35', '2023-10-16 11:18:35', 1);
 
 DROP TABLE IF EXISTS `sys_user_role`;
 
