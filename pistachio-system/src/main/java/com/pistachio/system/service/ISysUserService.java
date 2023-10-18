@@ -27,6 +27,14 @@ public interface ISysUserService {
 
     SysUserEntity findById(Long id);
 
+    /**
+     * 账号 登录
+     *
+     * @param account 账号
+     * @return 用户实体对象
+     */
+    SysUserEntity findByAccount(String account);
+
     void clearUserAuthorityInfoByRoleId(Long roleId);
 
     void clearUserAuthorityInfoByMenuId(Long menuId);
@@ -42,6 +50,8 @@ public interface ISysUserService {
     void deleteSysUser(Long id);
 
     SysUserEntity save(UserCreateRequest request, String password);
+
+    SysUserEntity saveEntity(SysUserEntity entity);
 
     SysUserEntity editSysUser(UserEditRequest request);
 

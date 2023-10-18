@@ -95,7 +95,7 @@ public class SysUserServiceImpl implements ISysUserService {
         }, PageRequest.of(request.getCurrent(), request.getSize(), Sort.by("createdAt").descending()));
 
         data.getContent().forEach(u -> {
-            u.setSysRoles(sysRoleRepository.listRolesByUserId(u.getId()));
+//            u.setSysRoles(sysRoleRepository.listRolesByUserId(u.getId()));
         });
 
         return data;
@@ -110,6 +110,11 @@ public class SysUserServiceImpl implements ISysUserService {
     @Override
     public SysUserEntity findById(Long id) {
         return sysUserRepository.findFirstById(id).orElseThrow(() -> new ServiceException("管理员数据不存在"));
+    }
+
+    @Override
+    public SysUserEntity findByAccount(String account) {
+        return sysUserRepository.findFirstByAccount(account).orElseThrow(() -> new ServiceException("用户不存在"));
     }
 
     @Transactional
@@ -196,6 +201,11 @@ public class SysUserServiceImpl implements ISysUserService {
         return save(entity);
     }
 
+    @Override
+    public SysUserEntity saveEntity(SysUserEntity entity) {
+        return save(entity);
+    }
+
     private SysUserEntity save(SysUserEntity entity) {
         return sysUserRepository.save(entity);
     }
@@ -205,8 +215,7 @@ public class SysUserServiceImpl implements ISysUserService {
         SysUserEntity userEntity = findById(request.getId());
 
         userEntity.setAvatar(request.getAvatar());
-        userEntity.setEmail(request.getEmail());
-        userEntity.setNickname(request.getNickname());
+        userEntity.setUsername(request.getNickname());
 
         return save(userEntity);
     }

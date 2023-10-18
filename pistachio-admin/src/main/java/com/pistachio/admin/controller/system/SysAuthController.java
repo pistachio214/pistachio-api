@@ -7,7 +7,7 @@ import com.pistachio.common.constant.Constants;
 import com.pistachio.common.core.redis.RedisCache;
 import com.pistachio.common.utils.R;
 import com.pistachio.common.utils.uuid.IdUtil;
-import com.pistachio.framework.security.handle.SysLoginHandle;
+import com.pistachio.framework.service.LoginService;
 import com.pistachio.system.dto.req.AdminLoginRequest;
 import com.pistachio.system.dto.vo.CaptchaImageVo;
 import com.pistachio.system.dto.vo.LoginSuccessVo;
@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import sun.misc.BASE64Encoder;
@@ -46,7 +47,7 @@ public class SysAuthController {
     private RedisCache redisCache;
 
     @Autowired
-    private SysLoginHandle sysLoginHandle;
+    private LoginService loginService;
 
     @Operation(summary = "系统登录获取验证码信息", description = "后台登录界面获取验证码")
     @GetMapping("/getCaptcha")
@@ -84,13 +85,14 @@ public class SysAuthController {
     @Operation(summary = "系统登录", description = "后台管理员登录系统")
     @PostMapping("/admin/doLogin")
     public R<LoginSuccessVo> doLogin(@Validated @RequestBody AdminLoginRequest loginRequest) {
-        return R.success(sysLoginHandle.doAdminLogin(loginRequest));
+        return R.success(loginService.adminLogin(loginRequest));
     }
 
     @Operation(summary = "管理员退出", description = "管理员退出")
     @GetMapping("/admin/logout")
+    @PreAuthorize("hasAnyAuthority('test')")
     public R<Object> doLogout() {
-        sysLoginHandle.doAdminLogout();
+        loginService.adminLogout();
         return R.success();
     }
 }

@@ -1,7 +1,7 @@
 package com.pistachio.admin;
 
-import cn.dev33.satoken.secure.SaSecureUtil;
-import com.pistachio.framework.security.handle.SysLoginHandle;
+//import cn.dev33.satoken.secure.SaSecureUtil;
+//import com.pistachio.framework.security.handle.SysLoginHandle;
 import com.pistachio.system.entity.SysDictEntity;
 import com.pistachio.system.entity.SysDictItemEntity;
 import com.pistachio.system.service.ISysDictService;
@@ -18,8 +18,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class AdminApplicationTests {
 
-    @Autowired
-    private SysLoginHandle sysLoginHandle;
+//    @Autowired
+//    private SysLoginHandle sysLoginHandle;
 
     @Value("${sa-token.private-key}")
     private String privateKey;
@@ -30,24 +30,24 @@ public class AdminApplicationTests {
     @Test
     void testVerifyPassword() {
 
-        String str = "12345678";
-        String encrypt = sysLoginHandle.rsaEncryptByPublic(str);
-
-        if (!SaSecureUtil.rsaDecryptByPrivate(privateKey, encrypt).equals(str)) {
-            System.out.println("密码不正确");
-        } else {
-            System.out.println("密码正确");
-        }
+//        String str = "12345678";
+//        String encrypt = sysLoginHandle.rsaEncryptByPublic(str);
+//
+//        if (!SaSecureUtil.rsaDecryptByPrivate(privateKey, encrypt).equals(str)) {
+//            System.out.println("密码不正确");
+//        } else {
+//            System.out.println("密码正确");
+//        }
 
     }
 
     @Test
     void generatePublicKeyAndPrivateKey() {
-        try {
-            System.out.println(SaSecureUtil.rsaGenerateKeyPair());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            System.out.println(SaSecureUtil.rsaGenerateKeyPair());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
     }
 

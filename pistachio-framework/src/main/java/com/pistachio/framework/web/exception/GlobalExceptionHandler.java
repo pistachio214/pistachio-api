@@ -1,6 +1,5 @@
 package com.pistachio.framework.web.exception;
 
-import cn.dev33.satoken.exception.NotLoginException;
 import com.pistachio.common.constant.HttpStatus;
 import com.pistachio.common.exception.ServiceException;
 import com.pistachio.common.utils.R;
@@ -31,21 +30,20 @@ public class GlobalExceptionHandler {
     /**
      * 登录检验异常
      */
-    @ExceptionHandler(NotLoginException.class)
-    public R<String> handleNotLoginException(NotLoginException e, HttpServletRequest request) {
-        System.out.println(1);
-        String requestURI = request.getRequestURI();
-        log.error(e.getMessage());
-        log.error("请求日志=" + requestURI);
-        return R.error("未登录,请登录后再操作");
-    }
+//    @ExceptionHandler(NotLoginException.class)
+//    public R<String> handleNotLoginException(NotLoginException e, HttpServletRequest request) {
+//        System.out.println(1);
+//        String requestURI = request.getRequestURI();
+//        log.error(e.getMessage());
+//        log.error("请求日志=" + requestURI);
+//        return R.error("未登录,请登录后再操作");
+//    }
 
     /**
      * 权限校验异常
      */
     @ExceptionHandler(AccessDeniedException.class)
     public R<String> handleAccessDeniedException(AccessDeniedException e, HttpServletRequest request) {
-        System.out.println(2);
         String requestURI = request.getRequestURI();
         log.error("请求地址'{}',权限校验失败'{}'", requestURI, e.getMessage());
         return R.error(HttpStatus.FORBIDDEN, "没有权限，请联系管理员授权");

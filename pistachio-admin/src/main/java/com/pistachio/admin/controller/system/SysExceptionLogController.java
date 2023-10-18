@@ -1,6 +1,5 @@
 package com.pistachio.admin.controller.system;
 
-import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.pistachio.common.utils.R;
 import com.pistachio.system.dto.req.ExceptionLogListRequest;
@@ -31,14 +30,12 @@ public class SysExceptionLogController {
 
     @Operation(summary = "异常操作日志 - 列表", description = "权限 [ developer:exception:log:list ]")
     @GetMapping("/list")
-    @SaCheckPermission("developer:exception:log:list")
     public R<Page<SysExceptionLogEntity>> list(ExceptionLogListRequest request) {
         return R.success(iSysLogService.exceptionPageLists(request));
     }
 
     @Operation(summary = "异常操作日志 - 详情", description = "权限 [ developer:exception:log:info ]")
     @GetMapping("/{id}")
-    @SaCheckPermission("developer:exception:log:info")
     public R<SysExceptionLogEntity> info(@PathVariable("id") Long id) {
         return R.success(iSysLogService.getExceptionLogById(id));
     }

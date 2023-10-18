@@ -8,8 +8,6 @@ import org.hibernate.annotations.Where;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author: Pengsy
@@ -24,44 +22,43 @@ import java.util.List;
 public class SysUserEntity extends BaseEntity implements Serializable {
 
     @Schema(description = "账号", defaultValue = "admin")
-    @Column(name = "username")
-    private String username;
+    @Column(name = "account")
+    private String account;
 
-    @Schema(description = "昵称", defaultValue = "萧十一郎")
-    @Column(name = "nickname")
-    private String nickname;
+    @Schema(description = "用户名", defaultValue = "萧十一郎")
+    @Column(name = "user_name")
+    private String username;
 
     @Schema(description = "密码")
     @Column(name = "password")
     private String password;
 
-    @Schema(description = "类型: 1管理员 2普通用户", defaultValue = "1")
+    @Schema(description = "类型 1 管理员 2普通用户")
     @Column(name = "type")
     private Integer type;
 
-    @Schema(description = "头像", defaultValue = "https://www.sss.com/xx.png")
+    @Schema(description = "头像")
     @Column(name = "avatar")
     private String avatar;
 
-    @Schema(description = "邮箱", defaultValue = "111111@163.com")
-    @Column(name = "email")
-    private String email;
+    @Schema(description = "最后登录时间")
+    @Column(name = "last_login_time")
+    private LocalDateTime lastLoginTime;
 
-    @Schema(description = "city", defaultValue = "city")
-    @Column(name = "city")
-    private String city;
+    @Schema(description = "账号是否可用 默认为1(可用)")
+    @Column(name = "enabled")
+    private Integer enabled;
 
-    @Schema(description = "最后登录时间", defaultValue = "2023-08-11 16:06")
-    @Column(name = "last_login")
-    private LocalDateTime lastLogin;
+    @Schema(description = "是否过期 默认为1(没有过期)")
+    @Column(name = "account_non_expired")
+    private Integer accountNonExpired;
 
-    @Schema(description = "状态", defaultValue = "1")
-    @Column(name = "status")
-    private Integer status;
+    @Schema(description = "账号是否锁定 默认为1(没有锁定)")
+    @Column(name = "account_non_locked")
+    private Integer accountNonLocked;
 
-    @Schema(description = "角色列表")
-    @Transient
-    @Column(updatable = false, insertable = false)
-    private List<SysRoleEntity> sysRoles = new ArrayList<>();
+    @Schema(description = "证书(密码)是否过期 默认为1(没有过期)")
+    @Column(name = "credentials_non_expired")
+    private Integer CredentialsNonExpired;
 
 }

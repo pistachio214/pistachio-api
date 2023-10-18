@@ -92,19 +92,19 @@
                 <scope>import</scope>
             </dependency>
 
-            <!-- sa-token -->
-            <dependency>
-                <groupId>cn.dev33</groupId>
-                <artifactId>sa-token-spring-boot-starter</artifactId>
-                <version>${sa.token.version}</version>
-            </dependency>
+<!--            &lt;!&ndash; sa-token &ndash;&gt;-->
+<!--            <dependency>-->
+<!--                <groupId>cn.dev33</groupId>-->
+<!--                <artifactId>sa-token-spring-boot-starter</artifactId>-->
+<!--                <version>${sa.token.version}</version>-->
+<!--            </dependency>-->
 
-            <!-- Sa-Token 整合 Redis （使用 jdk 默认序列化方式） -->
-            <dependency>
-                <groupId>cn.dev33</groupId>
-                <artifactId>sa-token-redis-jackson</artifactId>
-                <version>${sa.token.version}</version>
-            </dependency>
+<!--            &lt;!&ndash; Sa-Token 整合 Redis （使用 jdk 默认序列化方式） &ndash;&gt;-->
+<!--            <dependency>-->
+<!--                <groupId>cn.dev33</groupId>-->
+<!--                <artifactId>sa-token-redis-jackson</artifactId>-->
+<!--                <version>${sa.token.version}</version>-->
+<!--            </dependency>-->
 
             <!-- 验证码 -->
             <dependency>

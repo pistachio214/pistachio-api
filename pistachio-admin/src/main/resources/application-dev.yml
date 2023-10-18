@@ -25,10 +25,10 @@ server:
 
 spring:
   redis:
-    host: 127.0.0.1
+    host: 192.168.2.109
     port: 6379
-    database: 0
-    password: null
+    database: 5
+    password: slyours@123
     lettuce:
       pool:
         min-idle: 10
@@ -37,11 +37,15 @@ spring:
         max-wait: -1ms
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/pistachio-db?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+    url: jdbc:mysql://192.168.2.109:3306/pistachio-db?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
     username: root
-    password: 12345678
+    password: ruxiaoyi@123
     hikari:
       max-lifetime: 3600000
+  security:
+    token-name: pistachioToken
+    token-prefix: Authorization
+    matchers: "/sys-auth/admin/doLogin,/sys-auth/getCaptcha"
 
 snowflake:
   # 设置机器id

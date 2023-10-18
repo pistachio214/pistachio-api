@@ -1,15 +1,12 @@
 package com.pistachio.admin;
 
-import com.pistachio.system.entity.SysMenuEntity;
-import com.pistachio.system.entity.SysRoleMenuEntity;
-import com.pistachio.system.repository.SysMenuRepository;
-import com.pistachio.system.repository.SysRoleMenuRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -20,32 +17,27 @@ import java.util.List;
 @SpringBootTest
 public class PermissTests {
 
-    @Autowired
-    private SysRoleMenuRepository sysRoleMenuRepository;
 
-    @Autowired
-    private SysMenuRepository sysMenuRepository;
+
+    @Test
+    void restRequestPath() {
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String pass = encoder.encode("123456");
+        System.out.println(pass);
+    }
 
     @Test
     void restAdminPermiss() {
-        List<SysMenuEntity> menuList = sysMenuRepository.findAll();
+        String tokenPrefix = "Authorization";
+        String tokenValue = "Authorization fjdsaklfjioewjqiofgjioqhgioqjiofjioweqjfiowjeqifjwoqj";
 
-        List<SysRoleMenuEntity> roleMenuEntityList = new ArrayList<>();
-        menuList.forEach(menu -> {
+        String s = tokenValue.substring(0, tokenPrefix.length());
+        System.out.println(s);
 
-            System.out.println(menu.toString());
 
-            SysRoleMenuEntity entity = new SysRoleMenuEntity();
-            entity.setRoleId(1L);
-            entity.setMenuId(menu.getId());
-            entity.setStatus(1);
-
-            roleMenuEntityList.add(entity);
-        });
-
-        if (roleMenuEntityList.size() > 0) {
-            sysRoleMenuRepository.saveAll(roleMenuEntityList);
-        }
+        String s1 = tokenValue.substring(tokenPrefix.length() + 1);
+        System.out.println(s1);
     }
 
 }
