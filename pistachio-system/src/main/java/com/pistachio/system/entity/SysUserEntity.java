@@ -8,6 +8,8 @@ import org.hibernate.annotations.Where;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author: Pengsy
@@ -60,5 +62,10 @@ public class SysUserEntity extends BaseEntity implements Serializable {
     @Schema(description = "证书(密码)是否过期 默认为1(没有过期)")
     @Column(name = "credentials_non_expired")
     private Integer CredentialsNonExpired;
+
+    @Schema(description = "角色列表")
+    @Transient
+    @Column(updatable = false, insertable = false)
+    private List<SysRoleEntity> sysRoles = new ArrayList<>();
 
 }

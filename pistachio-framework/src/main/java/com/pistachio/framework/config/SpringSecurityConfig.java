@@ -29,17 +29,17 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${spring.security.matchers}")
     private String antMatchers;
 
-    /**
-     * 权限拒绝处理逻辑
-     */
-    @Autowired
-    private CustomizeAccessDeniedHandler customizeAccessDeniedHandler;
-
-    /**
-     * 匿名用户访问无权限资源时的异常
-     */
-    @Autowired
-    private CustomizeAuthenticationEntryPoint customizeAuthenticationEntryPoint;
+//    /**
+//     * 权限拒绝处理逻辑
+//     */
+//    @Autowired
+//    private CustomizeAccessDeniedHandler customizeAccessDeniedHandler;
+//
+//    /**
+//     * 匿名用户访问无权限资源时的异常
+//     */
+//    @Autowired
+//    private CustomizeAuthenticationEntryPoint customizeAuthenticationEntryPoint;
 
     /**
      * 会话信息过期策略
@@ -87,12 +87,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 //登出之后删除cookie
                 .deleteCookies("JSESSIONID");
 
-        //配置异常处理器 (权限拒绝、登录失效等)
-        http.exceptionHandling()
-                //匿名用户访问无权限资源时的异常处理
-                .authenticationEntryPoint(customizeAuthenticationEntryPoint)
-                //权限拒绝处理逻辑
-                .accessDeniedHandler(customizeAccessDeniedHandler);
+//        //配置异常处理器 (权限拒绝、登录失效等)  两种异常均已被全局异常处理器处理，则不需要再次处理
+//        http.exceptionHandling()
+//                //匿名用户访问无权限资源时的异常处理
+//                .authenticationEntryPoint(customizeAuthenticationEntryPoint)
+//                //权限拒绝处理逻辑( org.springframework.security.access.AccessDeniedException 异常被全局异常处理器处理,则不需要再次处理 )
+//                .accessDeniedHandler(customizeAccessDeniedHandler);
 
         //会话管理
         http.sessionManagement()

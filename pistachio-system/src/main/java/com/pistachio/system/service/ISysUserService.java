@@ -55,4 +55,6 @@ public interface ISysUserService {
 
     SysUserEntity editSysUser(UserEditRequest request);
 
+    void changePassword(SysUserEntity entity, UserChangePasswordRequest request);
+
 }

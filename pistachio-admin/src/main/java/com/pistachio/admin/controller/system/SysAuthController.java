@@ -15,7 +15,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import sun.misc.BASE64Encoder;
@@ -90,7 +89,6 @@ public class SysAuthController {
 
     @Operation(summary = "管理员退出", description = "管理员退出")
     @GetMapping("/admin/logout")
-    @PreAuthorize("hasAnyAuthority('test')")
     public R<Object> doLogout() {
         loginService.adminLogout();
         return R.success();

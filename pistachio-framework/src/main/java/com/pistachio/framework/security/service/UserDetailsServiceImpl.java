@@ -6,8 +6,6 @@ import com.pistachio.framework.dto.LoginUserDto;
 import com.pistachio.system.entity.SysUserEntity;
 import com.pistachio.system.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,7 +14,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @description: 重写后台管理登录实现类
@@ -36,18 +33,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         SysUserEntity sysUser = iSysUserService.findByAccount(username);
-        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-
+        List<String> authorityList = new ArrayList<>();
         //获取该用户所拥有的权限
         String authority = iSysUserService.getUserAuthorityInfo(sysUser.getId());
 
         if (StringUtil.isNotEmpty(authority)) {
-            List<String> authorityList = Arrays.asList(authority.split(","));
-            // 声明用户授权
-            grantedAuthorities = authorityList.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+            authorityList = Arrays.asList(authority.split(","));
         }
 
-        return new LoginUserDto(sysUser, grantedAuthorities);
+        return new LoginUserDto(sysUser, authorityList);
     }
 
 }

@@ -4,7 +4,6 @@ import com.pistachio.common.constant.UserConstants;
 import com.pistachio.common.core.ConvertCore;
 import com.pistachio.common.core.redis.RedisCache;
 import com.pistachio.common.exception.ServiceException;
-import com.pistachio.common.utils.R;
 import com.pistachio.common.utils.StringUtil;
 import com.pistachio.system.dto.req.UserChangePasswordRequest;
 import com.pistachio.system.dto.req.UserCreateRequest;
@@ -24,6 +23,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,6 +53,9 @@ public class SysUserServiceImpl implements ISysUserService {
 
     @Autowired
     private SysUserRoleRepository sysUserRoleRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     private RedisCache redisCache;
@@ -95,7 +98,7 @@ public class SysUserServiceImpl implements ISysUserService {
         }, PageRequest.of(request.getCurrent(), request.getSize(), Sort.by("createdAt").descending()));
 
         data.getContent().forEach(u -> {
-//            u.setSysRoles(sysRoleRepository.listRolesByUserId(u.getId()));
+            u.setSysRoles(sysRoleRepository.listRolesByUserId(u.getId()));
         });
 
         return data;
@@ -179,7 +182,7 @@ public class SysUserServiceImpl implements ISysUserService {
     @Override
     public void restPassword(Long id, String password) {
         SysUserEntity sysUser = findById(id);
-        sysUser.setPassword(password);
+        sysUser.setPassword(bCryptPasswordEncoder.encode(password));
 
         save(sysUser);
     }
@@ -195,7 +198,7 @@ public class SysUserServiceImpl implements ISysUserService {
     public SysUserEntity save(UserCreateRequest request, String password) {
         SysUserEntity entity = ConvertCore.map(request, SysUserEntity.class);
         entity.setType(UserConstants.USER_TYPE_MANAGER);
-        entity.setPassword(password);
+        entity.setPassword(bCryptPasswordEncoder.encode(password));
         entity.setAvatar(UserConstants.DEFAULT_AVATAR);
 
         return save(entity);
@@ -220,4 +223,24 @@ public class SysUserServiceImpl implements ISysUserService {
         return save(userEntity);
     }
 
+    @Override
+    public void changePassword(SysUserEntity userEntity, UserChangePasswordRequest request) {
+        if (request.getNewPassword().length() < 8 || request.getNewPassword().length() > 18) {
+            throw new ServiceException("新密码长度只能是 8~18位");
+        }
+
+        if (!request.getNewPassword().equals(request.getConfirmPassword())) {
+            throw new ServiceException("两次输入的密码不相同");
+        }
+
+        SysUserEntity sysUser = this.findById(userEntity.getId());
+
+        if (!bCryptPasswordEncoder.matches(request.getOldPassword(), sysUser.getPassword())) {
+            throw new ServiceException("原密码不正确");
+        }
+
+        sysUser.setPassword(bCryptPasswordEncoder.encode(request.getNewPassword()));
+
+        save(sysUser);
+    }
 }

@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,6 +41,7 @@ public class SysRoleController {
 
     @Operation(summary = "角色 - 列表", description = "权限 [ sys:role:list ]; 按条件搜索角色列表")
     @GetMapping("/list")
+    @PreAuthorize("hasAnyAuthority('sys:role:list')")
     public R<Page<SysRoleEntity>> list(RoleListRequest request) {
         return R.success(iSysRoleService.selectRolePage(request));
     }
@@ -47,6 +49,7 @@ public class SysRoleController {
     @Operation(summary = "角色 - 详情", description = "权限 [ sys:role:list ]; 按角色id搜索角色详情")
     @Parameter(name = "id", description = "角色id", required = true)
     @GetMapping("/info/{id}")
+    @PreAuthorize("hasAnyAuthority('sys:role:list')")
     public R<SysRoleAndMenuIdsVo> info(@PathVariable("id") Long id) {
         return R.success(iSysRoleService.detail(id));
     }
@@ -55,6 +58,7 @@ public class SysRoleController {
     @Parameter(name = "roleId", description = "角色id", required = true)
     @OperLog(operModul = "角色模块 - 角色设置菜单", operType = OperationLogConst.EDIT, operDesc = "角色设置菜单")
     @PostMapping("/perm/{roleId}")
+    @PreAuthorize("hasAnyAuthority('sys:role:perm')")
     public R<Object> perm(@PathVariable("roleId") Long roleId, @RequestBody RolePermRequest request) {
         iSysRoleService.permRoleMenu(roleId, request.getMenuIds());
 
@@ -65,6 +69,7 @@ public class SysRoleController {
     @Parameter(name = "id", description = "角色id", required = true)
     @OperLog(operModul = "角色模块 - 删除角色", operType = OperationLogConst.DELETE, operDesc = "删除角色")
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAnyAuthority('sys:role:delete')")
     public R<Object> delete(@PathVariable("id") Long id) {
         iSysRoleService.delete(id);
         return R.success();
@@ -73,6 +78,7 @@ public class SysRoleController {
     @Operation(summary = "角色 - 新增", description = "权限 [ sys:role:save ]; 新增角色")
     @OperLog(operModul = "角色模块 - 新增角色", operType = OperationLogConst.SAVE, operDesc = "新增角色")
     @PostMapping("/save")
+    @PreAuthorize("hasAnyAuthority('sys:role:save')")
     public R<SysRoleEntity> save(@Validated @RequestBody RoleCreateRequest request) {
         return R.success(iSysRoleService.create(request));
     }
@@ -80,6 +86,7 @@ public class SysRoleController {
     @Operation(summary = "角色 - 更新", description = "权限 [ sys:role:update ]; 更新角色")
     @OperLog(operModul = "角色模块 - 更新角色", operType = OperationLogConst.EDIT, operDesc = "更新角色")
     @PutMapping("/update")
+    @PreAuthorize("hasAnyAuthority('sys:role:update')")
     public R<SysRoleEntity> update(@Validated @RequestBody RoleUpdateRequest request) {
         return R.success(iSysRoleService.update(request));
     }

@@ -3,6 +3,7 @@ package com.pistachio.framework.service.impl;
 import com.pistachio.common.constant.CacheConstants;
 import com.pistachio.common.core.redis.RedisCache;
 import com.pistachio.common.exception.ServiceException;
+import com.pistachio.common.utils.GsonUtil;
 import com.pistachio.common.utils.JwtUtil;
 import com.pistachio.common.utils.StringUtil;
 import com.pistachio.framework.dto.LoginUserDto;
@@ -50,7 +51,7 @@ public class LoginServiceImpl implements LoginService {
         String jwt = JwtUtil.createJWT(userId);
 
         //authenticate存入redis
-        redisCache.setCacheObject("login:" + userId, loginUser);
+        redisCache.setCacheObject("login:" + userId, GsonUtil.toJSONString(loginUser));
 
         return new LoginSuccessVo(tokenName, jwt, tokenPrefix);
     }

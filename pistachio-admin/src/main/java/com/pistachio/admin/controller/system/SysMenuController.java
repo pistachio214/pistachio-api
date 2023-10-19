@@ -4,6 +4,7 @@ import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import com.pistachio.common.constant.OperationLogConst;
 import com.pistachio.common.utils.R;
 import com.pistachio.framework.annotation.OperLog;
+import com.pistachio.framework.dto.LoginUserDto;
 import com.pistachio.system.dto.SysMenuDto;
 import com.pistachio.system.dto.req.MenuCreateRequest;
 import com.pistachio.system.dto.req.MenuUpdateRequest;
@@ -18,6 +19,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -46,21 +50,24 @@ public class SysMenuController {
     @Operation(summary = "登录成功后执行", description = "在登录操作之后成功后，立马执行该操作得到菜单信息和管理员个人信息")
     @GetMapping("/nav")
     public R<NavMenuVo> nav() {
-//        SysUserEntity sysUser = (SysUserEntity) StpUtil.getSession().get("user");
-//        // 获取权限信息
-//        String authorityInfo = iSysUserService.getUserAuthorityInfo(sysUser.getId());
-//        // ROLE_admin,ROLE_normal,sys:user:list,....
-//        String[] authorityInfoArray = StringUtils.tokenizeToStringArray(authorityInfo, ",");
-//
-//        // 获取导航栏信息
-//        List<SysMenuDto> navs = iSysMenuService.getCurrentUserNav(sysUser.getId());
-//
-//        return R.success(new NavMenuVo(authorityInfoArray, navs, new NavUserVo(sysUser.getNickname(), sysUser.getAvatar())));
-        return R.success();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        LoginUserDto loginUser = (LoginUserDto) authentication.getPrincipal();
+
+        SysUserEntity sysUser = loginUser.getUser();
+        // 获取权限信息
+        String authorityInfo = iSysUserService.getUserAuthorityInfo(sysUser.getId());
+        // ROLE_admin,ROLE_normal,sys:user:list,....
+        String[] authorityInfoArray = StringUtils.tokenizeToStringArray(authorityInfo, ",");
+
+        // 获取导航栏信息
+        List<SysMenuDto> navs = iSysMenuService.getCurrentUserNav(sysUser.getId());
+
+        return R.success(new NavMenuVo(authorityInfoArray, navs, new NavUserVo(sysUser.getUsername(), sysUser.getAvatar())));
     }
 
     @Operation(summary = "菜单 - 列表", description = "权限 [ sys:menu:list ]")
     @GetMapping("/list")
+    @PreAuthorize("hasAnyAuthority('sys:menu:list')")
     public R<SysMenuListTreeVo> list() {
         return R.success(iSysMenuService.tree());
     }
@@ -68,6 +75,7 @@ public class SysMenuController {
     @Operation(summary = "菜单 - 详情", description = "权限 [ sys:menu:list ]; 根据菜单的id，获取菜单的详情")
     @Parameter(name = "id", description = "菜单id", required = true)
     @GetMapping("/info/{id}")
+    @PreAuthorize("hasAnyAuthority('sys:menu:list')")
     public R<SysMenuEntity> info(@PathVariable("id") Long id) {
         return R.success(iSysMenuService.findById(id));
     }
@@ -75,6 +83,7 @@ public class SysMenuController {
     @Operation(summary = "菜单 - 新增", description = "权限 [ sys:menu:save ]; 创建新菜单")
     @OperLog(operModul = "菜单模块 - 新增菜单", operType = OperationLogConst.SAVE, operDesc = "新增菜单")
     @PostMapping(value = "/save")
+    @PreAuthorize("hasAnyAuthority('sys:menu:save')")
     public R<SysMenuEntity> add(@Validated @RequestBody MenuCreateRequest request) {
         return R.success(iSysMenuService.create(request));
     }
@@ -83,6 +92,7 @@ public class SysMenuController {
     @Parameter(name = "id", description = "菜单id", required = true)
     @OperLog(operModul = "菜单模块 - 删除菜单", operType = OperationLogConst.DELETE, operDesc = "删除菜单")
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAnyAuthority('sys:menu:delete')")
     public R<Objects> delete(@PathVariable("id") Long id) {
         iSysMenuService.delete(id);
         return R.success();
@@ -91,6 +101,7 @@ public class SysMenuController {
     @Operation(summary = "菜单 - 更新", description = "权限 [ sys:menu:update ]; 更新菜单")
     @OperLog(operModul = "菜单模块 - 更新菜单", operType = OperationLogConst.EDIT, operDesc = "更新菜单")
     @PutMapping("/update")
+    @PreAuthorize("hasAnyAuthority('sys:menu:update')")
     public R<SysMenuEntity> update(@Validated @RequestBody MenuUpdateRequest request) {
         return R.success(iSysMenuService.edit(request));
     }

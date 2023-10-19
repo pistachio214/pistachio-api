@@ -19,4 +19,15 @@ public class GsonUtil {
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
         return gson.fromJson(json, classOfT);
     }
+
+    /**
+     * 需要排除带有 @Expose 注解的字段时使用
+     *
+     * @param obj Object
+     * @return String
+     */
+    public static String toExposeJSONString(Object obj) {
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+        return gson.toJson(obj);
+    }
 }

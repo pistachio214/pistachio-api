@@ -6,6 +6,9 @@ import com.pistachio.common.utils.R;
 import com.pistachio.common.utils.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -15,7 +18,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.servlet.http.HttpServletRequest;
-import java.nio.file.AccessDeniedException;
 import java.util.Objects;
 
 /**
@@ -28,16 +30,15 @@ public class GlobalExceptionHandler {
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     /**
-     * 登录检验异常
+     * 登入账号或密码错误
+     *
+     * @param e BadCredentialsException
+     * @return R
      */
-//    @ExceptionHandler(NotLoginException.class)
-//    public R<String> handleNotLoginException(NotLoginException e, HttpServletRequest request) {
-//        System.out.println(1);
-//        String requestURI = request.getRequestURI();
-//        log.error(e.getMessage());
-//        log.error("请求日志=" + requestURI);
-//        return R.error("未登录,请登录后再操作");
-//    }
+    @ExceptionHandler(BadCredentialsException.class)
+    public R<String> handleBadCredentialsException(BadCredentialsException e) {
+        return R.error("您的账号或者密码错误");
+    }
 
     /**
      * 权限校验异常
@@ -45,8 +46,24 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     public R<String> handleAccessDeniedException(AccessDeniedException e, HttpServletRequest request) {
         String requestURI = request.getRequestURI();
+        String message = "您没有权限访问该资源[ " + requestURI + " ]";
         log.error("请求地址'{}',权限校验失败'{}'", requestURI, e.getMessage());
-        return R.error(HttpStatus.FORBIDDEN, "没有权限，请联系管理员授权");
+
+        return R.error(HttpStatus.FORBIDDEN, message);
+    }
+
+    /**
+     * 匿名用户无权限访问
+     *
+     * @param e       Exception
+     * @param request httpServletRequest
+     * @return R
+     */
+    @ExceptionHandler(AuthenticationException.class)
+    public R<String> handleAccessDeniedException(AuthenticationException e, HttpServletRequest request) {
+        String message = "匿名用户无权限访问该资源 [ " + request.getRequestURI() + " ]";
+
+        return R.error(HttpStatus.FORBIDDEN, message);
     }
 
     /**

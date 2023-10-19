@@ -13,6 +13,12 @@
     <description>system系统模块</description>
 
     <dependencies>
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>2.2.2</version>
+            <scope>compile</scope>
+        </dependency>
 
         <!-- SpringBoot jpa -->
         <dependency>
@@ -20,17 +26,19 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
+        <!-- spring-security的加密模块 -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-crypto</artifactId>
+        </dependency>
+
         <!-- 系统模块-->
         <dependency>
             <groupId>com.pistachio</groupId>
             <artifactId>pistachio-common</artifactId>
         </dependency>
-        <dependency>
-            <groupId>io.swagger.core.v3</groupId>
-            <artifactId>swagger-annotations</artifactId>
-            <version>2.2.2</version>
-            <scope>compile</scope>
-        </dependency>
+
+
     </dependencies>
 
 </project>

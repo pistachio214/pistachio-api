@@ -68,7 +68,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         }
         //从redis中获取用户信息
         String redisKey = "login:" + userid;
-        LoginUserDto loginUser = ConvertUtil.map(redisCache.getCacheObject(redisKey), LoginUserDto.class);
+        LoginUserDto loginUser = GsonUtil.parseObject(redisCache.getCacheObject(redisKey).toString(), LoginUserDto.class);
         if (Objects.isNull(loginUser)) {
             throw new RuntimeException("用户未登录");
         }
