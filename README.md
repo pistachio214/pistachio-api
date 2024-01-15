@@ -6,7 +6,7 @@
 
 ## 管理端支持
 
-[https://github.com/RogerPeng123/pistachio-management](https://github.com/RogerPeng123/pistachio-management)
+[https://github.com/pistachio214/pistachio-management](https://github.com/pistachio214/pistachio-management)
 
 ## 技术方案
 
